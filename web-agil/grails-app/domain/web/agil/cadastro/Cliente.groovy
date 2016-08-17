@@ -2,14 +2,17 @@ package web.agil.cadastro
 
 class Cliente extends Papel {
 
-    static belongsTo = [vendedor: Vendedor]
+    String vendedor
+
     static constraints = {
         vendedor nullable: true
     }
 
-    def afterInsert() {
+    def beforeInsert() {
+        if (!dateCreated)
+            dateCreated = new Date()
         if (!codigo)
-            codigo = "C${sprintf('%05d', Papel.count())}"
+            codigo = "C${sprintf('%05d', Papel.count() + 1)}"
     }
 
     String toString() {

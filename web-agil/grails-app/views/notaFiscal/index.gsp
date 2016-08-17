@@ -24,31 +24,31 @@
     </div>
     <div id="filtros" class="panel-body collapse in">
         <g:form>
-            <div class="fieldcontain">
-                <label for="searchCodigo">Código</label>
-                <g:textField name="searchCodigo" value="${searchCodigo}" />
+            <div class="row">
+                <bs:fieldGroup name="searchCodigo" label="Código" value="${searchCodigo}" classGroup="col-md-2" />
+                <bs:fieldGroup name="searchCliente" label="Cliente" value="${searchCliente}" classGroup="col-md-3" />
+                <bs:fieldGroup name="searchTipo" label="Tipo" type="select"
+                               from="${TipoNotaFiscal.values()}" value="${searchTipo}"
+                               noSelection="['': 'TODOS']" classGroup="col-md-2" />
+                <bs:fieldGroup name="searchTotal" label="Total" value="${searchTotal}" classGroup="col-md-1" />
             </div>
-            <div class="fieldcontain">
-                <label for="searchCliente">Cliente</label>
-                <g:textField name="searchCliente" value="${searchCliente}" size="50" />
+            <div class="form-group">
+                <label for="searchDtEmissaoInicio">Data Emissão</label>
+                <div class="form-inline">
+                    <g:textField class="form-control datepicker" name="searchDtEmissaoInicio" value="${searchDtEmissaoInicio}" /> até
+                    <g:textField class="form-control datepicker" name="searchDtEmissaoFim" value="${searchDtEmissaoFim}" />
+                </div>
             </div>
-            <div class="fieldcontain">
-                <label for="searchTotal">Total</label>
-                <g:textField name="searchTotal" value="${searchTotal}" />
-            </div>
-            <div class="fieldcontain">
-                <label for="searchTipo">Tipo</label>
-                <g:select name="searchTipo" from="${TipoNotaFiscal.values()}" value="${searchTipo}" noSelection="['': 'TODOS']" />
-            </div>
-            <div class="fieldcontain">
-                <label for="searchCodigo">Data Emissão</label>
-                <g:field type="date" name="searchDtEmissaoInicio" value="${searchDtEmissaoInicio}" /> até <g:field type="date" name="searchDtEmissaoFim" value="${searchDtEmissaoFim}" />
-            </div>
-            <div class="fieldcontain">
-                <label for="searchCodigo">Data Autorização</label>
-                <g:field type="date" name="searchDtAuthInicio" value="${searchDtAuthInicio}" /> até <g:field type="date" name="searchDtAuthFim" value="${searchDtAuthFim}" />
+            <div class="form-group">
+                <label for="searchDtAuthInicio">Data Autorização</label>
+                <div class="form-inline">
+                    <g:textField name="searchDtAuthInicio" class="form-control datepicker" value="${searchDtAuthInicio}" /> até
+                    <g:textField name="searchDtAuthFim" class="form-control datepicker" value="${searchDtAuthFim}" />
+                </div>
                 <br>
-                <input type="submit" value="Procurar">
+                <button class="btn btn-default" type="submit">
+                    <span class="glyphicon glyphicon-search"></span> Procurar
+                </button>
             </div>
         </g:form>
     </div>

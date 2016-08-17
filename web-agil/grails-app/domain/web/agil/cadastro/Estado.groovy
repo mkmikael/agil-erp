@@ -8,5 +8,5 @@ class Estado {
     static constraints = {
     }
 
-    String toString() { nome }
+    String toString() { "$nome - $sigla" }
 }

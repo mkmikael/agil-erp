@@ -90,14 +90,14 @@ class ImportProdutoSEFAService {
             produto.ncm = ncmProd
             produto.codigo = codigoProd
             produto.nome = nomeProd
-            produto.fornecedor = fornecedor
+            produto.addToFornecedores(fornecedor)
             produto.save(failOnError: true)
 
-            def precoComp = new PrecoComponente()
-            precoComp.unidadeMedida = unidadeMedida
-            precoComp.preco = new BigDecimal(valorProd)
-            precoComp.produto = produto
-            precoComp.save(failOnError: true)
+//            def precoComp = new PrecoComponente()
+//            precoComp.unidadeMedida = unidadeMedida
+//            precoComp.preco = new BigDecimal(valorProd)
+//            precoComp.produto = produto
+//            precoComp.save(failOnError: true)
         } // !produto
         produto
     }

@@ -2,7 +2,12 @@ package web.agil.cadastro
 
 class Vendedor extends Papel {
 
-    static hasMany = [clientes: Cliente]
+    def beforeInsert() {
+        super.beforeInsert()
+        if (!codigo)
+            codigo = "${sprintf('V%05d', Vendedor.count() + 1)}"
+    }
+
     static constraints = {
     }
 }

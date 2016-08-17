@@ -1,5 +1,7 @@
 package web.agil.cadastro
 
+import web.agil.util.Util
+
 class Participante {
 
     Date dateCreated
@@ -20,6 +22,14 @@ class Participante {
         email nullable: true
     }
 
+    void setNome(String nome) {
+        this.nome = Util.removeSpecialCaracter(nome)?.toUpperCase()
+    }
+
+    void setNomeFantasia(String nomeFantasia) {
+        this.nomeFantasia = Util.removeSpecialCaracter(nomeFantasia)?.toUpperCase()
+    }
+
     Endereco getEndereco() {
         enderecos?.getAt(0)
     }
@@ -37,4 +47,7 @@ class Participante {
         if (!lastUpdated)
             lastUpdated = new Date()
     }
+
+    String toString() { "$nome - $nomeFantasia" }
+
 }

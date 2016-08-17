@@ -11,6 +11,7 @@
 //= require_self
 
 if (typeof jQuery !== 'undefined') {
+    $.ajaxSetup({ cache: false });
     (function($) {
         $('#spinner').ajaxStart(function() {
             $(this).fadeIn();
@@ -48,7 +49,9 @@ function applyBS_UI() {
 }
 
 function applyMask() {
-    var inputs = $('input[data-mask]');
+    $('.cpf').mask('000.000.000-00', { reverse: true, placeholder: '___.___.___-__'});
+    $('.cnpj').mask('00.000.000/0000-00', { reverse: true, placeholder: '__.___.___/____-__'});
+    var inputs = $('[data-mask]');
     inputs.each(function (i, input) {
         var inputMask = $(input);
         var mask = inputMask.data('mask');
@@ -71,12 +74,21 @@ function applySelect2() {
 }
 
 $(function () {
+    $('.datepicker').datepicker({
+        format: "dd/mm/yyyy",
+        language: 'pt-BR'
+    });
     applyBS_UI();
     applyMask();
     applySelect2();
     $('form[data-js-validate]').validate();
     $('input:submit').click(function () {
-        $.blockUI({ message: '<h1>Por favor, aguarde...</h1>' });
+        var self = $(this);
+        var form = self.parents('form');
+        if (form) {
+            if (form.valid())
+                $.blockUI({ message: '<h1>Por favor, aguarde...</h1>' });
+        }
         return true;
     });
 });

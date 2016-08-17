@@ -48,6 +48,7 @@ environments:
 ---
 server:
   contextPath: '/web-agil'
+  port: 8089
 ---
 tomcat:
   max-threads: 4
@@ -109,6 +110,9 @@ grails:
             maxsize: 1000
     controllers:
         defaultScope: singleton
+        upload:
+            maxFileSize: 5242880
+            maxRequestSize: 5242880
     converters:
         encoding: UTF-8
     views:

@@ -47,7 +47,7 @@ $(function () {
     count = $('#tableItens tbody tr').length;
     $('#add').click(function () {
         var url = $('#baseUrl').val() + "notaAvulsa/itemLinha";
-        $.get(url, {index: count}).done(function (data) {
+        $.get(url, {index: count, __ie: Math.random()}).done(function (data) {
             $('#tableItens tbody').append(data);
             apply();
             applyMask();

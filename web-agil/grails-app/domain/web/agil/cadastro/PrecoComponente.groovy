@@ -7,11 +7,10 @@ import java.text.NumberFormat
 
 class PrecoComponente {
 
-    TipoPreco tipoPreco = TipoPreco.VENDA
+    TipoPreco tipo = TipoPreco.VENDA
     BigDecimal preco
-    UnidadeMedida unidadeMedida
 
-    static belongsTo = [produto: Produto]
+    static belongsTo = [composicao: PrecoComposicao]
     static constraints = {
         preco scale: 6
     }

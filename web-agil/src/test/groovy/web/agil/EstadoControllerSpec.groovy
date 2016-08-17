@@ -5,7 +5,7 @@ import spock.lang.*
 import web.agil.cadastro.Estado
 
 @TestFor(EstadoController)
-@Mock(web.agil.cadastro.Estado)
+@Mock(Estado)
 class EstadoControllerSpec extends Specification {
 
     def populateValidParams(params) {

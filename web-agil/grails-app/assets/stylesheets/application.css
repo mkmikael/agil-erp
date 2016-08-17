@@ -7,10 +7,61 @@
 * You're free to add application-wide styles to this file and they'll appear at the top of the
 * compiled file, but it's generally better to create a new file per style scope.
 *= require bootstrap
-*= require bootstrap-theme
 *= require_tree plugins
 *= require_tree fonts
 */
 
 .scroll-vertical { overflow-x: scroll; }
 .scroll-v { margin-bottom: 0px }
+
+body {
+    color: #395a7a;
+    background-color: #f1f4f9;
+}
+
+.navbar-default {
+    background-image: none;
+    background-color: #2687e9;
+}
+
+.nav .open > a {
+    border-top: 1px solid #fff !important;
+    background-color: inherit !important;
+}
+
+.navbar-default .nav a {
+    color: #8bc8f6 !important;
+}
+
+.navbar-default .nav a:hover, .navbar-default .nav a:active, .navbar-default .nav a:focus {
+    color: #fff !important;
+}
+
+.properties {
+    padding: 0;
+    position: relative;
+    zoom: 1;
+    border: none;
+    list-style: none;
+}
+.properties li {
+    list-style: none;
+    overflow: hidden;
+    zoom: 1;
+    padding: .5em 0;
+}
+.properties li:nth-child(odd) {
+    background-color: #F5F5F5;
+}
+.p-label {
+    float: left;
+    display: block;
+    padding-right: 0.7em;
+    width: 25%;
+    text-align: right;
+}
+.p-value {
+    float: right;
+    display: block;
+    width: 74%;
+}

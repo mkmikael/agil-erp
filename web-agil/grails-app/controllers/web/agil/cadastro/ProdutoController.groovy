@@ -10,7 +10,38 @@ class ProdutoController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Produto.list(params), model:[produtoCount: Produto.count()]
+        if (!params.sort)
+            params.sort = 'nome'
+        if (!params.order)
+            params.order = 'asc'
+        def criteria = {
+            if (params.id)
+                eq('id', params.id as Long)
+            if (params.nome)
+                ilike('nome', "%${params.nome}%")
+            if (params.codigo)
+                ilike('codigo', "%${params.codigo}%")
+            if (params.ncm)
+                ilike('ncm', "%${params.ncm}%")
+
+            if (params.fornecedor) {
+                fornecedor {
+                    eq('id', params.fornecedor as Long)
+                }
+            }
+
+        }
+        def sort = params.remove('sort')
+        def _order = params.remove('order')
+        def produtoList = Produto.createCriteria().list(params) {
+            criteria.delegate = delegate
+            criteria()
+            order(sort, _order)
+            order 'id'
+        }
+        def produtoCount = Produto.createCriteria().count(criteria)
+        def fornecedorList = Fornecedor.list(sort: 'participante.nome')
+        [produtoList: produtoList, produtoCount: produtoCount, fornecedorList: fornecedorList] + params
     }
 
     def show(Produto produto) {
@@ -39,7 +70,8 @@ class ProdutoController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'produto.label', default: 'Produto'), produto.id])
+                def text = message(code: 'default.created.message', args: [message(code: 'produto.label', default: 'Produto'), produto.id])
+                flash.message = [type: 'info', text: text]
                 redirect produto
             }
             '*' { respond produto, [status: CREATED] }
@@ -68,7 +100,8 @@ class ProdutoController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'produto.label', default: 'Produto'), produto.id])
+                def text = message(code: 'default.updated.message', args: [message(code: 'produto.label', default: 'Produto'), produto.id])
+                flash.message = [type: 'info', text: text]
                 redirect produto
             }
             '*'{ respond produto, [status: OK] }

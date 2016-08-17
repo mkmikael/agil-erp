@@ -1,20 +1,32 @@
 package web.agil.cadastro
 
+import grails.transaction.Transactional
+import web.agil.arquivo.Arquivo
+import web.agil.sistema.Config
+
 class SistemaController {
 
 
     def importNotaFiscalService
     def importProdutoSEFAService
+    def importClienteExcelService
 
     def index() {
-        [config: grailsApplication.config] + params
+        def arquivoXlsxList = Arquivo.list(sort: 'codigo', order: 'desc')
+        [config: grailsApplication.config, arquivoXlsxList: arquivoXlsxList] + params
     }
 
+    @Transactional
     def save() {
-        if (params.arquivo?.nfs)
-            grailsApplication.config.arquivo.nfs = params.arquivo.nfs
-        if (params.arquivo?.produtos)
-            grailsApplication.config.arquivo.produtos = params.arquivo.produtos
+        def config
+        if (params.arquivo?.nfs) {
+            config = Config.findOrCreate('arquivo.nfs', params.arquivo.nfs as String)
+            grailsApplication.config.arquivo.nfs = config.value
+        }
+        if (params.arquivo?.produtos) {
+            config = Config.findOrCreate('arquivo.produtos', params.arquivo.produtos as String)
+            grailsApplication.config.arquivo.produtos = config.value
+        }
         redirect(action: 'index')
     }
 
@@ -30,11 +42,21 @@ class SistemaController {
         }
     }
 
+    def processarPlanilhaCliente(Long arquivoId) {
+        processar {
+            Arquivo arquivo = Arquivo.get(arquivoId)
+            if (!arquivo)
+                return 'Arquivo não encontrado'
+            importClienteExcelService.execute(arquivo.inputStream)
+        }
+    }
+
     protected processar(Closure closure) {
         def result
         try {
-            closure()
-            result = 'Processamento realizado com sucesso.'
+            result = closure()
+            if (!result)
+                result = 'Processamento realizado com sucesso.'
         } catch (Exception e) {
             result = 'Ocorreu um erro ao processar.'
             e.printStackTrace()

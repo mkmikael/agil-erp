@@ -28,12 +28,8 @@
             </g:hasErrors>
 
             <g:form action="save" data-js-validate="">
-                <fieldset class="form">
-                    <g:render template="form" bean="notaAvulsa" model="[clienteList: clienteList]" />
-                </fieldset>
-                <fieldset class="buttons">
-                    <g:submitButton name="create" class="btn btn-default" value="${message(code: 'default.button.create.label', default: 'Create')}" />
-                </fieldset>
+                <g:render template="form" bean="notaAvulsa" model="[clienteList: clienteList]" />
+                <g:submitButton name="create" class="btn btn-default" value="${message(code: 'default.button.create.label', default: 'Create')}" />
             </g:form>
     </body>
 </html>

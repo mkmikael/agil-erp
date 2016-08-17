@@ -35,14 +35,14 @@ class NotaFiscalController {
                 ilike('clienteNome', "%${params.searchCliente}%")
 
             if (params.searchDtEmissaoInicio)
-                ge('dataEmissao', Date.parse('yyyy-MM-dd', params.searchDtEmissaoInicio))
+                ge('dataEmissao', Date.parse('dd/MM/yyyy', params.searchDtEmissaoInicio))
             if (params.searchDtEmissaoFim)
-                le('dataEmissao', Date.parse('yyyy-MM-dd', params.searchDtEmissaoFim))
+                le('dataEmissao', Date.parse('dd/MM/yyyy', params.searchDtEmissaoFim))
 
             if (params.searchDtAuthInicio)
-                ge('dataAutorizacao', Date.parse('yyyy-MM-dd', params.searchDtAuthInicio))
+                ge('dataAutorizacao', Date.parse('dd/MM/yyyy', params.searchDtAuthInicio))
             if (params.searchDtAuthFim)
-                le('dataAutorizacao', Date.parse('yyyy-MM-dd', params.searchDtAuthFim))
+                le('dataAutorizacao', Date.parse('dd/MM/yyyy', params.searchDtAuthFim))
         }
         def notaFiscalList = NotaFiscal.createCriteria().list(params) {
             where.delegate = delegate

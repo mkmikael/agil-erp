@@ -12,8 +12,6 @@
     margin: 0 auto;
     width: 912px;
     padding: 0;
-    border-spacing: 0;
-    border-collapse: collapse;
 }
 table {
     width: 100%;
@@ -36,8 +34,8 @@ table td { text-align: left; }
 .field { display: inline-block; margin: 2px 6px 2px 0  }
 
 .label {
+    border: none;
     display: block;
-    height: 30%;
     color: inherit;
     text-align: left;
     font-size: .8em;
@@ -45,7 +43,6 @@ table td { text-align: left; }
 }
 .value {
     display: block;
-    height: 70%;
     font-size: 1.1em;
     font-weight: bolder;
     padding-left: .6em;
@@ -111,7 +108,7 @@ table td { text-align: left; }
             <g:if test="${cliente?.participante?.instanceOf(Organizacao)}">
                 <td>
                     <span class="label">UF</span>
-                    <span id="_uf" class="value">${endereco?.estado}</span>
+                    <span id="_uf" class="value">${endereco?.cidade?.estado}</span>
                 </td>
                 <td>
                     <span class="label">Inscrição Estadual</span>
@@ -121,14 +118,18 @@ table td { text-align: left; }
             <g:else>
                 <td colspan="2">
                     <span class="label">UF</span>
-                    <span id="_uf" class="value">${endereco?.estado}</span>
+                    <span id="_uf" class="value">${endereco?.cidade?.estado}</span>
                 </td>
             </g:else>
         </tr>
         <tr>
-            <td colspan="4">
+            <td>
                 <span class="label">Forma PGTO</span>
                 <span id="_formaPagamento" class="value">${notaAvulsa.formaPagamento}</span>
+            </td>
+            <td colspan="3">
+                <span class="label">Natureza Op.</span>
+                <span id="_formaPagamento" class="value">${notaAvulsa.tipo?.nome}</span>
             </td>
         </tr>
         <tr>

@@ -23,11 +23,8 @@ class Papel {
     def beforeInsert() {
         if (!dateCreated)
             dateCreated = new Date()
-    }
-
-    def afterInsert() {
         if (!codigo)
-            codigo = "${sprintf('%05d', Papel.count())}"
+            codigo = "${sprintf('%05d', Papel.count() + 1)}"
     }
 
     def beforeUpdate() {

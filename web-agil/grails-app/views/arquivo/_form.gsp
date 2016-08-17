@@ -1,0 +1,1 @@
+<g:field type="file" name="arquivo" />

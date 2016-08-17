@@ -2,13 +2,12 @@ package web.agil.cadastro
 
 import grails.test.mixin.TestFor
 import spock.lang.Specification
-import web.agil.financeiro.ItemNota
 
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
-@TestFor(ItemNota)
-class ItemNotaSpec extends Specification {
+@TestFor(PrecoComposicao)
+class PrecoComposicaoSpec extends Specification {
 
     def setup() {
     }

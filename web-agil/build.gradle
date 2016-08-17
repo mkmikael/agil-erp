@@ -4,7 +4,9 @@ buildscript {
     }
     repositories {
         mavenLocal()
-        maven { url "https://repo.grails.org/grails/core" }
+        maven {
+            url "https://repo.grails.org/grails/core"
+        }
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
@@ -43,7 +45,14 @@ dependencyManagement {
 dependencies {
     // https://mvnrepository.com/artifact/postgresql/postgresql
     compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
+    compile "org.grails.plugins:export:2.0.0"
     runtime 'org.grails.plugins:grails-console:2.0.6'
+
+    compile 'com.github.wmixvideo:nfe:2.0.0'
+
+    compile "org.apache.poi:poi:3.7"
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.7'
 
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"

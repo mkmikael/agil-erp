@@ -50,5 +50,25 @@
     </g:form>
 </div> <!-- panel -->
 
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Processamento de Clientes Planilha Excel
+    </div> <!-- panel-heading -->
+    <g:form>
+        <div class="panel-body">
+            <h4>Parâmetros</h4>
+            <div class="form-group">
+                <label class="control-label">Arquivo</label>
+                <g:select class="form-control" from="${arquivoXlsxList}" name="arquivoId" optionKey="id"
+                          optionValue="${{"${it.codigo} - ${it.dateCreated?.format('dd/MM/yyyy HH:mm')} - $it.nome"}}"/>
+            </div>
+        </div> <!-- panel-body -->
+        <div class="panel-footer">
+            <g:actionSubmit class="btn btn-lg btn-primary" value="Processar" action="processarPlanilhaCliente" />
+        </div> <!-- panel-footer -->
+    </g:form>
+</div> <!-- panel -->
+
+
 </body>
 </html>

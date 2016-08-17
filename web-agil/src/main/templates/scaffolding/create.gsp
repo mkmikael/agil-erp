@@ -6,33 +6,41 @@
         <title><g:message code="default.create.label" args="[entityName]" /></title>
     </head>
     <body>
-        <a href="#create-${propertyName}" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-        <div class="nav" role="navigation">
-            <ul>
-                <li><a class="home" href="\${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                <li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-            </ul>
-        </div>
-        <div id="create-${propertyName}" class="content scaffold-create" role="main">
-            <h1><g:message code="default.create.label" args="[entityName]" /></h1>
-            <g:if test="\${flash.message}">
-            <div class="message" role="status">\${flash.message}</div>
-            </g:if>
-            <g:hasErrors bean="\${this.${propertyName}}">
-            <ul class="errors" role="alert">
-                <g:eachError bean="\${this.${propertyName}}" var="error">
-                <li <g:if test="\${error in org.springframework.validation.FieldError}">data-field-id="\${error.field}"</g:if>><g:message error="\${error}"/></li>
-                </g:eachError>
-            </ul>
-            </g:hasErrors>
-            <g:form action="save">
-                <fieldset class="form">
-                    <f:all bean="${propertyName}"/>
-                </fieldset>
-                <fieldset class="buttons">
-                    <g:submitButton name="create" class="save" value="\${message(code: 'default.button.create.label', default: 'Create')}" />
-                </fieldset>
-            </g:form>
-        </div>
+
+    <p>
+        <g:link class="btn btn-default" action="index">
+            <span class="glyphicon glyphicon-list"></span> <g:message code="default.list.label" args="[entityName]" />
+        </g:link>
+    </p>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4><g:message code="default.create.label" args="[entityName]" /></h4>
+        </div> <!-- panel-heading -->
+        <div class="panel-body">
+
+        <g:render template="/layouts/message" />
+
+        <g:hasErrors bean="\${this.${propertyName}}">
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <ul class="list-unstyled" role="alert">
+                    <g:eachError bean="\${this.${propertyName}}" var="error">
+                        <li <g:if test="\${error in org.springframework.validation.FieldError}">data-field-id="\${error.field}"</g:if>><g:message error="\${error}"/></li>
+                    </g:eachError>
+                </ul>
+            </div>
+        </g:hasErrors>
+
+        <g:form action="save">
+            <f:all bean="${propertyName}"/>
+            <p>
+                <g:submitButton name="save" class="btn btn-default" value="\${message(code: 'default.button.create.label', default: 'Create')}" />
+            </p>
+        </g:form>
+        </div> <!-- panel-body -->
+    </div> <!-- panel -->
+
     </body>
 </html>

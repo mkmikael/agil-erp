@@ -2,18 +2,8 @@ package web.agil
 
 import grails.transaction.Transactional
 import org.hibernate.SessionFactory
-import web.agil.cadastro.Cidade
 import web.agil.cadastro.Cliente
-import web.agil.cadastro.Endereco
-import web.agil.cadastro.Estado
-import web.agil.cadastro.Fornecedor
-import web.agil.cadastro.Organizacao
 import web.agil.cadastro.Participante
-import web.agil.cadastro.Pessoa
-import web.agil.cadastro.PrecoComponente
-import web.agil.cadastro.Produto
-import web.agil.cadastro.Telefone
-import web.agil.cadastro.UnidadeMedida
 import web.agil.financeiro.ItemNotaComercial
 import web.agil.financeiro.NotaFiscal
 import web.agil.financeiro.enums.TipoNotaFiscal
@@ -26,6 +16,7 @@ class ImportNotaFiscalService {
     SessionFactory sessionFactory
     def grailsApplication
     def importProdutoSEFAService
+    ImportClienteService importClienteService
 
     def execute() {
         filePath = grailsApplication.config.arquivo?.nfs
@@ -136,7 +127,7 @@ class ImportNotaFiscalService {
         doc = doc.trim()
         xNome = xNome.split('-')
         def nome
-        def nomeFantasia
+        def nomeFantasia = null
         if (xNome.size() == 2) {
             nomeFantasia = xNome[1]
         } else if (xNome.size() == 1) {
@@ -144,33 +135,13 @@ class ImportNotaFiscalService {
         }
         nome = xNome[0]
 
-        def clienteInstance = Cliente.createCriteria().get {
-            participante {
-                eq('nome', nome)
-            }
-        }
-        if (!clienteInstance) {
-            def participante
-            clienteInstance = new Cliente()
-            if (doc.length() == 11) {
-                participante = new Pessoa()
-                participante.cpf = doc
-            } else {
-                participante = new Organizacao()
-                participante.cnpj = doc
-            }
-            participante.nome = nome
-            participante.nomeFantasia = nomeFantasia
-            participante.save()
-            clienteInstance.participante = participante
-            clienteInstance.save()
-
-            createEnderecoAndContato(infNFe.dest.enderDest, participante)
-        }
-        clienteInstance
+        def map = [nome: nome, nomeFantasia: nomeFantasia, doc: doc]
+        def cliente = importClienteService.createCliente(map)
+        createEnderecoAndContato(infNFe.dest.enderDest, cliente.participante)
+        cliente
     }
 
-    def createEnderecoAndContato(enderDest, Participante participante) {
+    void createEnderecoAndContato(enderDest, Participante participante) {
         def logradouro = enderDest.xLgr.text().trim()
         def numero = enderDest.nro.text().trim()
         def bairro = enderDest.xBairro.text().trim()
@@ -180,39 +151,10 @@ class ImportNotaFiscalService {
         def fone = enderDest.fone.text().trim()
         def pais = enderDest.xPais.text().trim()
 
-        def cidadeInstance = Cidade.findByNome(cidade)
-        if (!cidadeInstance) {
-            cidadeInstance = new Cidade()
-            cidadeInstance.nome = cidade
-            cidadeInstance.save()
-        }
-
-        def estado = Estado.findBySigla(uf)
-        if (!estado) {
-            estado = new Estado()
-            estado.sigla = uf
-            if (uf == 'PA')
-                estado.nome = "Pará"
-            else
-                estado.nome = uf
-            estado.save()
-        }
-
-        def endereco = new Endereco()
-        endereco.logradouro = logradouro
-        endereco.numero = numero
-        endereco.bairro = bairro
-        endereco.cep = cep
-        endereco.cidade = cidadeInstance
-        endereco.estado = estado
-        endereco.participante = participante
-        endereco.save()
-
-        def telefone = new Telefone()
-        telefone.ddd = '91'
-        telefone.numero = fone
-        telefone.participante = participante
-        telefone.save()
+        def endereco = [logradouro: logradouro, numero: numero, bairro: bairro, cep: cep, uf: uf, cidade: cidade]
+        def telefone = [fone: fone]
+        def map = [endereco: endereco, telefone: telefone]
+        importClienteService.createEnderecoAndContato(participante, map)
     }
 
     protected gormClean() {
@@ -220,4 +162,5 @@ class ImportNotaFiscalService {
         sessionFactory.currentSession.flush()
         sessionFactory.currentSession.clear()
     }
+
 }

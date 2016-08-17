@@ -1,6 +1,7 @@
 package web.agil
 
 import grails.transaction.Transactional
+import web.agil.cadastro.Cliente
 import web.agil.cadastro.Produto
 import web.agil.financeiro.ItemNotaComercial
 import web.agil.financeiro.enums.TipoNotaFiscal
@@ -18,12 +19,12 @@ class EstatisticaService {
         where
             i.notaComercial.tipo != 'BONIFICACAO'
             and i.notaComercial.tipo != 'TROCA'
-            and i.notaComercial.cliente.id not in (28399, 30453, 28389)
+            and i.notaComercial.cliente.id not in (:ids)
 			and i.produto = :produto
         group by month(i.notaComercial.dataEmissao)
         order by total desc
 """
-        def resumo = ItemNotaComercial.executeQuery(hql, [produto: p])
+        def resumo = ItemNotaComercial.executeQuery(hql, [produto: p, ids: fornecedoresIds()])
         (1..12).each { mes ->
             boolean contains = false
             resumo.each { map ->
@@ -74,26 +75,32 @@ class EstatisticaService {
         where month(i.notaComercial.dataEmissao) = :mes
             and i.notaComercial.tipo != 'BONIFICACAO'
             and i.notaComercial.tipo != 'TROCA'
-            and i.notaComercial.cliente.id not in (28399, 30453, 28389)
+            and i.notaComercial.cliente.id not in (:ids)
         group by i.produto
         order by total desc
 """
-        def resumoProdutos = ItemNotaComercial.executeQuery(hql, [mes: params.mes as Integer]);
+        def paramsResumo = [mes: params.mes as Integer, ids: fornecedoresIds()]
+        def resumoProdutos = ItemNotaComercial.executeQuery(hql, paramsResumo);
         def resumoProdutosWithBoni = []
-        resumoProdutos.each { resumoProd ->
+        resumoProdutos.eachWithIndex { resumoProd, i ->
             hql = """
         select new map(sum(i.quantidade) as quant_boni)
         from ItemNotaComercial i
         where month(i.notaComercial.dataEmissao) = :mes
             and i.notaComercial.tipo = 'BONIFICACAO'
             and i.produto = :produto
-            and i.notaComercial.cliente.id not in (28399, 30453, 28389)
+            and i.notaComercial.cliente.id not in (:ids)
         group by i.produto
 """
-            def bonificados = ItemNotaComercial.executeQuery(hql, [mes: params.mes as Integer, produto: resumoProd.produto])
-            if (!bonificados?.getAt(0)) {
+            def bonificados = ItemNotaComercial.executeQuery(hql, [mes: params.mes as Integer, produto: resumoProd.produto, ids: fornecedoresIds()])
+            bonificados = bonificados?.getAt(0)
+            if (!bonificados) {
                 bonificados = [quant_boni: 0]
             }
+            println "Boni: " + bonificados.class
+            println "Resu: " + resumoProd.class
+            println "Boni Ins: " + bonificados
+            println "Resu Ins: " + resumoProd
             resumoProdutosWithBoni << (resumoProd + bonificados)
         }
         resumoProdutosWithBoni
@@ -109,12 +116,27 @@ class EstatisticaService {
         where month(i.notaComercial.dataEmissao) = :mes
             and i.notaComercial.tipo != 'BONIFICACAO'
             and i.notaComercial.tipo != 'TROCA'
-            and i.notaComercial.cliente.id not in (28399, 30453, 28389)
+            and i.notaComercial.cliente.id not in (:ids)
         group by i.produto.fornecedor
         order by total desc
 """
-        def resumoProdutos = ItemNotaComercial.executeQuery(hql, [mes: params.mes as Integer]);
+        def resumoProdutos = ItemNotaComercial.executeQuery(hql, [mes: params.mes as Integer, ids: fornecedoresIds()]);
         resumoProdutos
+    }
+
+    def fornecedoresIds() {
+        def fors = ['DORI', 'EMPRESA BRASILEIRA DE DISTRIB', 'RICLAN', 'POMPEIA', 'PANTERA', 'DOLOMITA']
+        def ids = []
+        fors.each { f ->
+            def c = Cliente.createCriteria().get {
+                participante {
+                    ilike('nome', "%$f%")
+                }
+            }
+            if (c?.id)
+                ids << c?.id
+        }
+        ids
     }
 
     def updateNfDevolucao() {
@@ -132,4 +154,5 @@ class EstatisticaService {
                 nf.notaFiscal.total = -nf.notaFiscal.total
         }
     }
+
 }

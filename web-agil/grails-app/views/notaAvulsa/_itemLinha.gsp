@@ -14,7 +14,7 @@
                   value="${item?.unidadeMedida?.id}"/>
     </td>
     <td>
-        <g:textField name="notaAvulsa.itens[$i].preco" value="${item?.preco}"
+        <g:textField name="notaAvulsa.itens[$i].preco" value="${g.formatNumber(number: item?.preco, type: 'currency', currencySymbol: '')}"
                      class="form-control" data-mask="money" data-field="vlUnitario" required="${true}" />
     </td>
     <td>

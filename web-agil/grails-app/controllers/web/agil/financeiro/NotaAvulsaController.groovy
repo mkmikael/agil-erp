@@ -58,7 +58,12 @@ class NotaAvulsaController {
     }
 
     def edit(NotaAvulsa notaAvulsa) {
-        respond notaAvulsa
+        def clienteList = Cliente.withCriteria {
+            participante {
+                order 'nomeFantasia'
+            }
+        }
+        respond notaAvulsa, model: [clienteList: clienteList]
     }
 
     @Transactional

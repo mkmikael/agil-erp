@@ -1,13 +1,13 @@
-package web.agil.financeiro
+package web.agil.cadastro
 
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 /**
- * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
+ * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
  */
-@TestFor(Nota)
-class NotaSpec extends Specification {
+@TestFor(PapelController)
+class PapelControllerSpec extends Specification {
 
     def setup() {
     }
