@@ -13,9 +13,9 @@ TOMCAT_UNDEPLOY_URL="http://localhost:8080/manager/text/undeploy?path="
 TOMCAT_LIST_URL="http://localhost:8080/manager/text/list"
 TOMCAT_SESSIONS_URL="http://localhost:8080/manager/text/sessions"
 
-APP_PATH="web-vidamelhor"
-WAR_FILE="web-vidamelhor.war"
-GRAILS_ENV="homologation"
+APP_PATH="web-agil"
+WAR_FILE="web-agil.war"
+GRAILS_ENV="prod"
 GRAILS_CLEAN=false
 RESTART_TOMCAT=false
 
@@ -39,8 +39,6 @@ function undeploy {
 }
 
 function make_war {
-  export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64"
-
   if [ "$GRAILS_CLEAN" = true ] ; then
     echo "Grails clean..."
     grails clean
