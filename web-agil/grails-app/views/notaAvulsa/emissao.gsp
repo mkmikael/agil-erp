@@ -191,7 +191,7 @@ table td { text-align: left; }
             Nº do Documento: ${notaAvulsa.codigo}
         </div>
         <div style="margin: 6px; font-weight: bold">
-            Nome / Razão Social: ${cliente?.participante?.nome}
+            Nome / Razão Social: ${cliente?.participante}
         </div>
         <div style="margin: 6px; font-weight: bold">
             CNPJ / CPF: ${cliente?.participante?.doc}
