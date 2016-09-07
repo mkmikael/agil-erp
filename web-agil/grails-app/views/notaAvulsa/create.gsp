@@ -27,7 +27,7 @@
             </ul>
             </g:hasErrors>
 
-            <g:form action="save" data-js-validate="">
+            <g:form action="save">
                 <g:render template="form" bean="notaAvulsa" model="[clienteList: clienteList]" />
                 <g:submitButton name="create" class="btn btn-default" value="${message(code: 'default.button.create.label', default: 'Create')}" />
             </g:form>

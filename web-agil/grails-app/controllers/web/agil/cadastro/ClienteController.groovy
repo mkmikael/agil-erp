@@ -1,16 +1,13 @@
 package web.agil.cadastro
 
+import grails.transaction.Transactional
 import web.agil.ClienteService
-import web.agil.ParticipanteService
-import web.agil.cadastro.enums.StatusPapel
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class ClienteController {
 
-    ParticipanteService participanteService
     ClienteService clienteService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -37,26 +34,29 @@ class ClienteController {
     @Transactional
     def save() {
         def cliente = new Cliente()
-        cliente.participante = new Pessoa(params.participante)
+        if (params.tipoPessoa == 'PJ') {
+            cliente.participante = new Organizacao(params.participante)
+        } else if (params.tipoPessoa == 'PF') {
+            cliente.participante = new Pessoa(params.participante)
+        } else {
+            throw new RuntimeException('Não deveria ter acontecido.')
+        }
         def participante = cliente.participante
         participante.save()
         participante.addToEnderecos(params.endereco)
-        participante.addToTelefones(params.telefone)
+        if (params.telefone?.ddd && params.telefone?.numero)
+            participante.addToTelefones(params.telefone)
         if (cliente.hasErrors()) {
             transactionStatus.setRollbackOnly()
             respond cliente.errors, view:'create'
             return
         }
 
-        cliente.save flush:true
+        cliente.save()
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'cliente.label', default: 'Cliente'), cliente.id])
-                redirect cliente
-            }
-            '*' { respond cliente, [status: CREATED] }
-        }
+        def msg = message(code: 'default.created.message', args: [message(code: 'cliente.label', default: 'Cliente'), cliente.id])
+        flash.message = [type: 'info', text: msg]
+        redirect cliente
     }
 
     def edit(Cliente cliente) {
@@ -82,6 +82,8 @@ class ClienteController {
         def telefone = participante.telefone ?: new Telefone(participante: participante)
         telefone.properties = params.telefone
         telefone.save()
+
+        participante.save(failOnError: true)
 
         if (cliente.hasErrors()) {
             transactionStatus.setRollbackOnly()

@@ -5,7 +5,7 @@
 function apply() {
     $('*[data-remover]').click(function () {
         if (confirm('Você tem certeza?')) {
-            var id = $(this).data('id');
+            var id = $(this).data('remover');
             if (id) {
                 var url = $('#baseUrl').val() + "notaAvulsa/removerItem/" + id;
                 $.post(url);

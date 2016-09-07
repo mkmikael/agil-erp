@@ -63,7 +63,7 @@ class ${className}ControllerSpec extends Specification {
         when:"The show action is execu ted with a null domain"
             controller.show(null).get()
 
-        then:"A 404 error is returned"
+        then:"A 404 danger is returned"
             response.status == 404
 
         when:"A domain instance is passed to the show action"
@@ -80,7 +80,7 @@ class ${className}ControllerSpec extends Specification {
         when:"The edit action is executed with a null domain"
             controller.edit(null).get()
 
-        then:"A 404 error is returned"
+        then:"A 404 danger is returned"
             response.status == 404
 
         when:"A domain instance is passed to the edit action"
@@ -97,7 +97,7 @@ class ${className}ControllerSpec extends Specification {
             request.method = "PUT"
             controller.update(null).get()
 
-        then:"A 404 error is returned"
+        then:"A 404 danger is returned"
             status == 404
 
         when:"An invalid domain instance is passed to the update action"

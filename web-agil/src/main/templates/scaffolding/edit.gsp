@@ -6,22 +6,16 @@
     <title><g:message code="default.edit.label" args="[entityName]" /></title>
 </head>
 <body>
-
-<p>
-    <g:link class="btn btn-default" action="index">
-        <span class="glyphicon glyphicon-list"></span> <g:message code="default.list.label" args="[entityName]" />
-    </g:link>
-    <g:link class="btn btn-default" action="create">
-        <span class="glyphicon glyphicon-plus"></span> <g:message code="default.new.label" args="[entityName]" />
-    </g:link>
-</p>
-
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4><g:message code="default.edit.label" args="[entityName]" /></h4>
     </div> <!-- panel-heading -->
     <div class="panel-body">
-        <g:render template="/layouts/message" />
+        <bs:alert />
+        <p>
+            <bs:listButton entityName="\${entityName}" />
+            <bs:createButton entityName="\${entityName}" />
+        </p>
 
         <g:hasErrors bean="\${this.${propertyName}}">
             <div class="alert alert-danger">
@@ -40,7 +34,7 @@
             <g:hiddenField name="version" value="\${this.${propertyName}?.version}" />
             <f:all bean="${propertyName}"/>
             <p>
-                <input type="submit" class="btn btn-default" value="\${message(code: 'default.button.update.label', default: 'Update')}" />
+                <bs:updateButton />
             </p>
         </g:form>
     </div> <!-- panel-body -->

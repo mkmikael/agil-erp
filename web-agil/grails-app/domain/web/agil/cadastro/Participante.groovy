@@ -48,6 +48,11 @@ class Participante {
             lastUpdated = new Date()
     }
 
-    String toString() { "$nome - $nomeFantasia" }
+    String toString() {
+        if (nome && nomeFantasia)
+            "$nome - $nomeFantasia"
+        else
+            nome
+    }
 
 }

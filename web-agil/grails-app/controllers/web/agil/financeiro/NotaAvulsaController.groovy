@@ -120,8 +120,9 @@ class NotaAvulsaController {
 
     @Transactional
     def removerItem(Long id) {
-        def item = ItemNotaAvulsa.get(id)
+        def item = ItemNotaComercial.get(id)
         item.delete()
+        response.status = 200
     }
 
     protected void notFound() {

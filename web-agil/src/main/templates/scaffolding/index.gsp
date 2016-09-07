@@ -11,13 +11,11 @@
         <h4><g:message code="default.list.label" args="[entityName]" /></h4>
     </div> <!-- panel-heading -->
     <div class="panel-body">
-        <p>
-            <g:link action="create" class="btn btn-default">
-                <span class="glyphicon glyphicon-plus"></span> <g:message code="default.new.label" args="[entityName]" />
-            </g:link>
-        </p>
+        <bs:alert />
 
-        <g:render template="/layouts/message" />
+        <p>
+            <bs:createButton entityName="\${entityName}" />
+        </p>
 
         <g:if test="\${${propertyName}List}">
             <f:table collection="\${${propertyName}List}" />

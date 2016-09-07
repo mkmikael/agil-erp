@@ -4,6 +4,7 @@
     <meta name="layout" content="main" />
     <g:set var="entityName" value="${message(code: 'cliente.label', default: 'Cliente')}" />
     <title><g:message code="default.create.label" args="[entityName]" /></title>
+    <asset:javascript src="/web-agil/participante/form.js" />
 </head>
 <body>
 <p>
@@ -11,6 +12,9 @@
         <span class="glyphicon glyphicon-list"></span> <g:message code="default.list.label" args="[entityName]" />
     </g:link>
 </p>
+
+
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4><g:message code="default.create.label" args="[entityName]" /></h4>
@@ -24,11 +28,12 @@
                 </g:eachError>
             </ul>
         </g:hasErrors>
-        <g:form action="save" data-js-validate="">
+        <g:form action="save">
             <g:render template="form" model="[cliente: cliente]" />
             <g:submitButton name="create" class="btn btn-default" value="${message(code: 'default.button.create.label', default: 'Create')}" />
         </g:form>
     </div> <!-- panel-body -->
 </div> <!-- panel -->
+%{--<g:render template="/papel/checkPapel" />--}%
 </body>
 </html>

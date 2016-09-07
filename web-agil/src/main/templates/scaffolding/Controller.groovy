@@ -1,5 +1,8 @@
 <%=packageName ? "package ${packageName}" : ''%>
 
+
+import web.agil.AlertService
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -7,6 +10,8 @@ import grails.transaction.Transactional
 class ${className}Controller {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
+    AlertService alertService
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -39,7 +44,8 @@ class ${className}Controller {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: '${propertyName}.label', default: '${className}'), ${propertyName}.id])
+                def message = message(code: 'default.created.message', args: [message(code: '${propertyName}.label', default: '${className}'), ${propertyName}])
+                alertService.success(text: message)
                 redirect ${propertyName}
             }
             '*' { respond ${propertyName}, [status: CREATED] }
@@ -68,7 +74,8 @@ class ${className}Controller {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: '${propertyName}.label', default: '${className}'), ${propertyName}.id])
+                def message = message(code: 'default.updated.message', args: [message(code: '${propertyName}.label', default: '${className}'), ${propertyName}])
+                alertService.success(text: message)
                 redirect ${propertyName}
             }
             '*'{ respond ${propertyName}, [status: OK] }
@@ -88,7 +95,8 @@ class ${className}Controller {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: '${propertyName}.label', default: '${className}'), ${propertyName}.id])
+                def message = message(code: 'default.deleted.message', args: [message(code: '${propertyName}.label', default: '${className}'), ${propertyName}])
+                alertService.success(text: message)
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }

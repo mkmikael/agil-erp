@@ -45,6 +45,7 @@ dependencyManagement {
 dependencies {
     // https://mvnrepository.com/artifact/postgresql/postgresql
     compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
+//    compile "org.grails.plugins:gbfaces:0.1"
     compile "org.grails.plugins:export:2.0.0"
     runtime 'org.grails.plugins:grails-console:2.0.6'
 

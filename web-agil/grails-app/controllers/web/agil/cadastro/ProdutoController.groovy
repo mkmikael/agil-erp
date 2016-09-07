@@ -1,5 +1,8 @@
 package web.agil.cadastro
 
+import web.agil.AlertService
+import web.agil.ProdutoService
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -8,40 +11,20 @@ class ProdutoController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    AlertService alertService
+    ProdutoService produtoService
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         if (!params.sort)
             params.sort = 'nome'
         if (!params.order)
             params.order = 'asc'
-        def criteria = {
-            if (params.id)
-                eq('id', params.id as Long)
-            if (params.nome)
-                ilike('nome', "%${params.nome}%")
-            if (params.codigo)
-                ilike('codigo', "%${params.codigo}%")
-            if (params.ncm)
-                ilike('ncm', "%${params.ncm}%")
-
-            if (params.fornecedor) {
-                fornecedor {
-                    eq('id', params.fornecedor as Long)
-                }
-            }
-
-        }
-        def sort = params.remove('sort')
-        def _order = params.remove('order')
-        def produtoList = Produto.createCriteria().list(params) {
-            criteria.delegate = delegate
-            criteria()
-            order(sort, _order)
-            order 'id'
-        }
-        def produtoCount = Produto.createCriteria().count(criteria)
+        def produtoListAndCount = produtoService.produtoListAndCount(params)
         def fornecedorList = Fornecedor.list(sort: 'participante.nome')
-        [produtoList: produtoList, produtoCount: produtoCount, fornecedorList: fornecedorList] + params
+        def model = [fornecedorList: fornecedorList,
+                     produtoCount: produtoListAndCount.produtoCount] + params
+        respond produtoListAndCount.produtoList, model: model
     }
 
     def show(Produto produto) {
@@ -70,8 +53,8 @@ class ProdutoController {
 
         request.withFormat {
             form multipartForm {
-                def text = message(code: 'default.created.message', args: [message(code: 'produto.label', default: 'Produto'), produto.id])
-                flash.message = [type: 'info', text: text]
+                def text = message(code: 'default.created.message', args: [message(code: 'produto.label', default: 'Produto'), "'$produto'"])
+                alertService.success(title: 'Sucesso!', text: text)
                 redirect produto
             }
             '*' { respond produto, [status: CREATED] }
@@ -100,8 +83,8 @@ class ProdutoController {
 
         request.withFormat {
             form multipartForm {
-                def text = message(code: 'default.updated.message', args: [message(code: 'produto.label', default: 'Produto'), produto.id])
-                flash.message = [type: 'info', text: text]
+                def text = message(code: 'default.updated.message', args: [message(code: 'produto.label', default: 'Produto'), "'$produto'"])
+                alertService.success(title: 'Sucesso!', text: text)
                 redirect produto
             }
             '*'{ respond produto, [status: OK] }
@@ -110,7 +93,6 @@ class ProdutoController {
 
     @Transactional
     def delete(Produto produto) {
-
         if (produto == null) {
             transactionStatus.setRollbackOnly()
             notFound()
@@ -121,7 +103,8 @@ class ProdutoController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'produto.label', default: 'Produto'), produto.id])
+                def text = message(code: 'default.deleted.message', args: [message(code: 'produto.label', default: 'Produto'), "'$produto'"])
+                alertService.success(title: 'Sucesso!', text: text)
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }

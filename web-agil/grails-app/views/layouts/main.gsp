@@ -34,14 +34,15 @@
                     <li><a href="${createLink(controller: 'notaAvulsa')}" class="navbar-link">Notas Avulsas</a></li>
                     <li><a href="${createLink(controller: 'notaFiscal')}" class="navbar-link">Notas Fiscais</a></li>
                     <li><a href="${createLink(controller: 'estatistica')}" class="navbar-link">Estatística</a></li>
-                    <li><a href="${createLink(controller: 'estatistica')}" class="navbar-link">Meta Vendedores</a></li>
+                    %{--<li><a href="${createLink(controller: 'estatistica')}" class="navbar-link">Meta Vendedores</a></li>--}%
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             Cadastros <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="${createLink(controller: 'produto')}">Produtos</a></li>
                             <li><a href="${createLink(controller: 'cliente')}">Clientes</a></li>
+                            <li><a href="${createLink(controller: 'produto')}">Produtos</a></li>
+                            <li><a href="${createLink(controller: 'vendedor')}">Vendedores</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">

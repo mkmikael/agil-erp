@@ -37,12 +37,9 @@ class ClienteService {
 
         } // criteria
 
-//        def sort = params.remove('sort')
-//        def _order = params.remove('order')
         def clienteList = Cliente.createCriteria().list(params) {
             criteria.delegate = delegate
             criteria()
-//            order(sort, _order)
         }
         def clienteCount = Cliente.createCriteria().count(criteria)
         [clienteList: clienteList, clienteCount: clienteCount]

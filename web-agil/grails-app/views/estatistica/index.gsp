@@ -14,28 +14,22 @@
     <div class="message" role="status">${flash.message}</div>
 </g:if>
 
-<div class="navbar navbar-default" role="navigation">
-    <ul class="nav navbar-nav navbar-left">
-        <li>
-            <a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a>
-        </li>
-        <li>
-            <a id="produtoCmpMensal" class="list">Produto Comparativo Mensal</a>
-        </li>
-        <li>
-            <a id="fornecedorBI" class="list">BI Fornecedor</a>
-        </li>
-        <li>
-            <a id="produtoBI" class="list">BI Produto</a>
-        </li>
-    </ul>
-</div>
+<p>
+    <a id="produtoCmpMensal" class="btn btn-default">
+        <span class="glyphicon glyphicon-stats"></span> Produto Comparativo Mensal</a>
+    <a id="fornecedorBI" class="btn btn-default">
+        <span class="glyphicon glyphicon-stats"></span> BI Fornecedor</a>
+    <a id="produtoBI" class="btn btn-default">
+        <span class="glyphicon glyphicon-stats"></span> BI Produto</a>
+</p>
 
 
 <br>
 
-<div id="views">
+<div class="panel panel-default">
+    <div id="views" class="panel-body">
+    </div> <!-- panel-body -->
+</div> <!-- panel -->
 
-</div>
 </body>
 </html>

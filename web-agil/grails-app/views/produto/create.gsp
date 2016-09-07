@@ -7,11 +7,8 @@
 </head>
 <body>
 <p>
-    <g:link class="btn btn-default" action="index">
-        <span class="glyphicon glyphicon-list"></span> <g:message code="default.list.label" args="[entityName]" />
-    </g:link>
+    <bs:listButton entityName="${entityName}" />
 </p>
-
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4><g:message code="default.create.label" args="[entityName]" /></h4>
@@ -32,7 +29,7 @@
                 <g:render template="form" model="[produto: produto]" />
             </fieldset>
             <fieldset class="buttons">
-                <g:submitButton name="create" class="btn btn-default" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+                <bs:saveButton />
             </fieldset>
         </g:form>
     </div> <!-- panel-body -->

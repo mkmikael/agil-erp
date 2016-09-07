@@ -64,7 +64,7 @@ class EstadoControllerSpec extends Specification {
         when:"The show action is executed with a null domain"
             controller.show(null)
 
-        then:"A 404 error is returned"
+        then:"A 404 danger is returned"
             response.status == 404
 
         when:"A domain instance is passed to the show action"
@@ -80,7 +80,7 @@ class EstadoControllerSpec extends Specification {
         when:"The edit action is executed with a null domain"
             controller.edit(null)
 
-        then:"A 404 error is returned"
+        then:"A 404 danger is returned"
             response.status == 404
 
         when:"A domain instance is passed to the edit action"
@@ -98,7 +98,7 @@ class EstadoControllerSpec extends Specification {
             request.method = 'PUT'
             controller.update(null)
 
-        then:"A 404 error is returned"
+        then:"A 404 danger is returned"
             response.redirectedUrl == '/estado/index'
             flash.message != null
 

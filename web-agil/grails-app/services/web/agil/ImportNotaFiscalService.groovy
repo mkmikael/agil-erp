@@ -49,7 +49,7 @@ class ImportNotaFiscalService {
         doc = doc.trim()
         def valorTotal = infNFe.total.ICMSTot.vNF.text().trim()
         def codigo = infNFe.ide.cNF.text().trim()
-        def cliente = infNFe.dest.xNome.text().trim()
+        def cliente = infNFe.dest.xNome.text().trim()?.toUpperCase()
         String operacao = infNFe.ide.natOp.text().trim();
         def dataEmissao = Date.parse('yyyy-MM-dd', infNFe.ide.dhEmi.text().trim() as String)
         def dataAuthStr = xml.protNFe?.infProt?.dhRecbto?.text()?.trim()
@@ -129,9 +129,9 @@ class ImportNotaFiscalService {
         def nome
         def nomeFantasia = null
         if (xNome.size() == 2) {
-            nomeFantasia = xNome[1]
+            nomeFantasia = xNome[1]?.toUpperCase()
         } else if (xNome.size() == 1) {
-            nomeFantasia = xNome[0]
+            nomeFantasia = xNome[0]?.toUpperCase()
         }
         nome = xNome[0]
 
@@ -142,12 +142,12 @@ class ImportNotaFiscalService {
     }
 
     void createEnderecoAndContato(enderDest, Participante participante) {
-        def logradouro = enderDest.xLgr.text().trim()
+        def logradouro = enderDest.xLgr.text().trim()?.toUpperCase()
         def numero = enderDest.nro.text().trim()
-        def bairro = enderDest.xBairro.text().trim()
+        def bairro = enderDest.xBairro.text().trim()?.toUpperCase()
         def cep = enderDest.CEP.text().trim()
-        def uf = enderDest.UF.text().trim()
-        def cidade = enderDest.xMun.text().trim()
+        def uf = enderDest.UF.text().trim()?.toUpperCase()
+        def cidade = enderDest.xMun.text().trim()?.toUpperCase()
         def fone = enderDest.fone.text().trim()
         def pais = enderDest.xPais.text().trim()
 

@@ -9,7 +9,7 @@ import web.agil.cadastro.Pessoa
 @Transactional
 class ParticipanteService {
 
-    def save(Class<? extends Participante> clazz, Map params) {
+    Participante save(Class<? extends Participante> clazz, Map params) {
         def participanteId = params.participante?.id as Long
         def participante
         if (clazz == Pessoa) {
@@ -57,5 +57,7 @@ class ParticipanteService {
                     numero = params.telefone?.numero
             }
         }
+        participante
     }
+
 }

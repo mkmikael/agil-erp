@@ -9,20 +9,11 @@
 <body>
 <h2><g:message code="default.list.label" args="[entityName]" /></h2>
 
-<g:if test="${flash.message}">
-    <div class="alert alert-info alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        ${flash.message}
-    </div>
-</g:if>
-
 <div class="panel panel-default">
     <div class="panel-heading">
-        <a data-toggle="collapse" data-target="#filtros"><span class="glyphicon glyphicon-collapse-down"></span> Filtros</a>
+        <a data-toggle="collapse" data-target="#filtros"><span class="glyphicon glyphicon-collapse-up"></span> Filtros</a>
     </div>
-    <div id="filtros" class="panel-body collapse in">
+    <div id="filtros" class="panel-body collapse">
         <g:form>
             <div class="row">
                 <bs:fieldGroup name="searchCodigo" label="Código" value="${searchCodigo}" classGroup="col-md-2" />

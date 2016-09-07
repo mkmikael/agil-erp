@@ -7,9 +7,7 @@
 </head>
 <body>
 <p>
-    <g:link class="btn btn-default" action="create">
-        <span class="glyphicon glyphicon-plus"></span> <g:message code="default.new.label" args="[entityName]" />
-    </g:link>
+    <bs:createButton entityName="${entityName}" />
 </p>
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -17,29 +15,20 @@
     </div> <!-- panel-heading -->
 
     <div class="panel-body">
-        <g:render template="/layouts/message" />
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <a data-toggle="collapse" data-target="#filtros"><span class="glyphicon glyphicon-collapse-down"></span> Filtros</a>
-            </div> <!-- panel-heading -->
-            <div id="filtros" class="panel-body collapse in">
-                <g:form>
-                    <div class="row">
-                        <bs:fieldGroup label="Id" name="id" classGroup="col-md-1" value="${id}" />
-                        <bs:fieldGroup label="Código" name="codigo" classGroup="col-md-2" value="${codigo}" />
-                        <bs:fieldGroup label="NCM" name="ncm" classGroup="col-md-2" value="${ncm}" />
-                        <bs:fieldGroup label="Nome" name="nome" classGroup="col-md-3" value="${nome}" />
-                        %{--<bs:fieldGroup label="Fornecedor" type="select" name="fornecedor"--}%
-                                       %{--classGroup="col-md-3" value="${fornecedor}"--}%
-                                       %{--from="${fornecedorList}" optionKey="id" noSelection="['':'']" />--}%
-                    </div>
-                    <button type="submit" class="btn btn-default">
-                        <span class="glyphicon glyphicon-search"></span> Procurar
-                    </button>
-                </g:form>
-            </div> <!-- panel-body -->
-        </div> <!-- panel -->
+        <bs:alert />
+        <bs:panelFilter>
+            <g:form>
+                <div class="row">
+                    <bs:fieldGroup label="Id" name="id" classGroup="col-md-1" value="${id}" />
+                    <bs:fieldGroup label="Código" name="codigo" classGroup="col-md-2" value="${codigo}" />
+                    <bs:fieldGroup label="NCM" name="ncm" classGroup="col-md-2" value="${ncm}" />
+                    <bs:fieldGroup label="Nome" name="nome" classGroup="col-md-3" value="${nome}" />
+                    %{--<bs:fieldGroup label="Fornecedor" type="select" name="fornecedor"--}%
+                    %{--classGroup="col-md-3" value="${fornecedor}"--}%
+                    %{--from="${fornecedorList}" optionKey="id" noSelection="['':'']" />--}%
+                </div>
+            </g:form>
+        </bs:panelFilter>
 
         <table data-bs-table>
             <thead>

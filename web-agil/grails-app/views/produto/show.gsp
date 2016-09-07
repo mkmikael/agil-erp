@@ -7,10 +7,8 @@
 </head>
 <body>
 <p>
-    <g:link class="btn btn-default" action="index">
-        <span class="glyphicon glyphicon-list"></span> <g:message code="default.list.label" args="[entityName]" /></g:link>
-    <g:link class="btn btn-default" action="create">
-        <span class="glyphicon glyphicon-plus"></span> <g:message code="default.new.label" args="[entityName]" /></g:link>
+    <bs:listButton entityName="${entityName}" />
+    <bs:createButton entityName="${entityName}" />
 </p>
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -42,15 +40,10 @@
             </li>
         </ul>
 
-        <g:form resource="${this.produto}" method="DELETE">
-            <fieldset class="buttons">
-                <g:link class="btn btn-default" action="edit" resource="${this.produto}">
-                    <span class="glyphicon glyphicon-edit"></span> <g:message code="default.button.edit.label" default="Edit" /></g:link>
-                <button class="btn btn-default" type="submit" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" >
-                    <span class="glyphicon glyphicon-trash"></span> ${message(code: 'default.button.delete.label', default: 'Delete')}
-                </button>
-            </fieldset>
-        </g:form>
+        <fieldset class="buttons">
+            <bs:editButton resource="${this.produto}" />
+            <bs:deleteButton resource="${this.produto}" />
+        </fieldset>
     </div> <!-- panel-body -->
 </div> <!-- panel -->
 </body>

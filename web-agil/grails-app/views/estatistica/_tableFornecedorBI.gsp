@@ -4,7 +4,7 @@
 <br>
 <table data-bs-table>
     <thead>
-    <th>Produto</th>
+    <th>Fornecedor</th>
     <th>Quant.</th>
     <th>Total</th>
     </thead>

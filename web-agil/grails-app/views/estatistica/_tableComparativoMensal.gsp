@@ -1,8 +1,9 @@
 <%@ page import="web.agil.financeiro.enums.TipoNotaFiscal" %>
 
-<div id="table" class="scrollable-horizontal">
+<div id="table" style="position: relative; overflow: scroll; height: 500px">
     <table data-bs-table>
         <thead>
+        <tr></tr>
         <tr>
             <th colspan="23">Produto</th>
         </tr>
