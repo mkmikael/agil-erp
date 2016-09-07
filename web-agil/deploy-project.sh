@@ -3,10 +3,10 @@
 # aplicação, reinicia o Tomcat, gera o novo war da aplicação, faz o deploy.
 
 # Precisamos de acesso root.
-if [ "$EUID" -ne 0 ] ; then
-  echo "Por favor, execute o deploy como root."
-  exit
-fi
+#if [ "$EUID" -ne 0 ] ; then
+#  echo "Por favor, execute o deploy como root."
+#  exit
+#fi
 
 TOMCAT_DEPLOY_URL="http://localhost:8080/manager/text/deploy?path="
 TOMCAT_UNDEPLOY_URL="http://localhost:8080/manager/text/undeploy?path="
@@ -43,16 +43,15 @@ function make_war {
 
   if [ "$GRAILS_CLEAN" = true ] ; then
     echo "Grails clean..."
-    /home/mikael/.sdkman/candidates/grails/current/bin/grails clean
+    grails clean
   fi
 
-  /home/mikael/.sdkman/candidates/grails/current/bin/grails -Dgrails.env=$GRAILS_ENV war $WAR_FILE
+  grails -Dgrails.env=$GRAILS_ENV war $WAR_FILE
 }
 
 function restart_tomcat {
     service tomcat7 restart
 }
-
 
 # Leitura dos argumentos.
 for i in "$@"; do
