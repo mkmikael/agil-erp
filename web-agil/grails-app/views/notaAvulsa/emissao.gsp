@@ -70,7 +70,7 @@ table td { text-align: left; }
             <g:set var="cliente" value="${notaAvulsa.cliente}" />
             <td>
                 <span class="label">Nome / Razão Social</span>
-                <span id="_nome" class="value">${cliente?.participante?.nome}</span>
+                <span id="_nome" class="value">${cliente?.participante}</span>
             </td>
             <td>
                 <span class="label">CNPJ / CPF</span>
