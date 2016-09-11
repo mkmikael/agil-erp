@@ -1,5 +1,6 @@
 package web.agil.financeiro
 
+import web.agil.LancamentoService
 import web.agil.cadastro.Cliente
 
 import static org.springframework.http.HttpStatus.*
@@ -9,6 +10,8 @@ import grails.transaction.Transactional
 class NotaAvulsaController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
+    LancamentoService lancamentoService
 
     def index(Integer max) {
         params.max = Math.min(max ?: 40, 100)
@@ -29,7 +32,14 @@ class NotaAvulsaController {
                 order 'nomeFantasia'
             }
         }
-        respond new NotaAvulsa(params), model: [clienteList: clienteList]
+        def notaAvulsa
+        def id = params.id
+        if (id) {
+            notaAvulsa = NotaAvulsa.get(id as Long)
+        } else {
+            notaAvulsa = new NotaAvulsa(params)
+        }
+        respond notaAvulsa, model: [clienteList: clienteList]
     }
 
     @Transactional
@@ -47,6 +57,8 @@ class NotaAvulsaController {
         }
         notaAvulsa.calcularTotal()
         notaAvulsa.save failOnSave:true
+        List intervalosIds = params.list('intervalos')
+        lancamentoService.criarLancamentos(notaAvulsa, intervalosIds)
 
         request.withFormat {
             form multipartForm {
@@ -58,12 +70,7 @@ class NotaAvulsaController {
     }
 
     def edit(NotaAvulsa notaAvulsa) {
-        def clienteList = Cliente.withCriteria {
-            participante {
-                order 'nomeFantasia'
-            }
-        }
-        respond notaAvulsa, model: [clienteList: clienteList]
+        redirect action: 'create', id: notaAvulsa.id
     }
 
     @Transactional

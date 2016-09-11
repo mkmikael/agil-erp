@@ -1,3 +1,4 @@
+<%@ page import="web.agil.financeiro.enums.StatusEventoFinanceiro" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,9 +56,14 @@
                 <td class="property-label">Vendedor</td>
                 <td class="property-value">${notaAvulsa.vendedor}</td>
             </tr>
+            <g:set var="evento" value="${notaAvulsa.eventoFinanceiro}" />
             <tr>
-                <td class="property-label">Data de Vencimento</td>
-                <td class="property-value"><g:formatDate date="${notaAvulsa.dataVencimento}" format="dd/MM/yyyy" /> </td>
+                <td class="property-label">Status</td>
+                <td class="property-value">${evento?.status}</td>
+            </tr>
+            <tr>
+                <td class="property-label">Prazo</td>
+                <td class="property-value">${evento?.planoPagamento?.display}</td>
             </tr>
             <tr>
                 <td class="property-label">Valor Total</td>
@@ -84,13 +90,37 @@
             </g:each>
             </tbody>
         </table>
+        <br>
+        <table data-bs-table>
+            <tr>
+                <th colspan="2">Boletos</th>
+            </tr>
+            <tr>
+                <th>Data Vencimento</th>
+                <th>Valor</th>
+            </tr>
+            <g:each in="${notaAvulsa?.eventoFinanceiro?.lancamentos}" var="l">
+                <tr>
+                    <td>${l.dataPrevista.format('dd/MM/yyyy')}</td>
+                    <td><g:formatNumber number="${l.valor}" locale="pt_BR" type="currency" /></td>
+                </tr>
+            </g:each>
+        </table>
     </div> <!-- panel-body -->
     <div class="panel-footer">
-        <g:form resource="${this.notaAvulsa}" method="DELETE">
-            <g:link class="btn btn-default" action="edit" resource="${this.notaAvulsa}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-            <input class="btn btn-default" type="submit" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-            <g:link class="btn btn-default" resource="${this.notaAvulsa}" action="emissao"><span class="glyphicon glyphicon-print"></span> Imprimir</g:link>
-        </g:form>
+        <bs:editButton resource="${notaAvulsa}" />
+        <bs:deleteButton resource="${notaAvulsa}" />
+        <g:link class="btn btn-default" resource="${this.notaAvulsa}" action="emissao">
+            <span class="glyphicon glyphicon-print"></span> Imprimir
+        </g:link>
+        <g:if test="${notaAvulsa != StatusEventoFinanceiro.CANCELADO}">
+            <g:form controller="eventoFinanceiro" action="cancelar"
+                    id="${evento?.id}" style="display: inline-block">
+                <button class="btn btn-default" type="submit" onclick="return confirm('Você tem certeza?')">
+                    <span class="glyphicon glyphicon-remove-circle"></span> Cancelar
+                </button>
+            </g:form>
+        </g:if>
     </div> <!-- panel-footer -->
 </div> <!-- panel -->
 </body>

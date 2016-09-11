@@ -1,8 +1,10 @@
 package web.agil
 
-import grails.test.mixin.*
-import spock.lang.*
+import grails.test.mixin.Mock
+import grails.test.mixin.TestFor
+import spock.lang.Specification
 import web.agil.cadastro.Estado
+import web.agil.cadastro.EstadoController
 
 @TestFor(EstadoController)
 @Mock(Estado)

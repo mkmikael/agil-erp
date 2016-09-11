@@ -9,6 +9,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
  * Created by mkmik on 06/08/2016.
  */
 class Util {
+    static Date truncDate(Date date) {
+        date.hours = 0
+        date.minutes = 0
+        date.seconds = 0
+        date
+    }
+
     static removeSpecialCaracter(String str) {
         if (str)
             return str

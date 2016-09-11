@@ -6,7 +6,7 @@ import web.agil.util.Util
 
 class PapelController {
 
-    static allowedMethods = [ativar: 'POST', 'inativar': 'POST', 'checkPapel': 'POST']
+    static allowedMethods = [ativar: 'POST', 'cancelar': 'POST', 'checkPapel': 'POST']
 
     AlertService alertService
 

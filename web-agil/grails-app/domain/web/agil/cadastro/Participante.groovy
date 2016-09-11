@@ -44,8 +44,7 @@ class Participante {
     }
 
     def beforeUpdate() {
-        if (!lastUpdated)
-            lastUpdated = new Date()
+        lastUpdated = new Date()
     }
 
     String toString() {

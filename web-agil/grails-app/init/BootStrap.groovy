@@ -1,16 +1,24 @@
+import web.agil.CorteClienteService
 import web.agil.cadastro.Estado
 import web.agil.cadastro.Pessoa
+import web.agil.cadastro.UnidadeMedida
 import web.agil.cadastro.Vendedor
+import web.agil.fixture.AdministradoraFixture
+import web.agil.fixture.ClienteFixture
+import web.agil.fixture.PlanoPagamentoFixture
+import web.agil.fixture.UnidadeMedidaFixture
 import web.agil.sistema.Config
 
 class BootStrap {
 
     def grailsApplication
+    CorteClienteService corteClienteService
 
     def init = { servletContext ->
         Locale.default = new Locale('pt', 'BR')
         initializeFixture()
         initConfig()
+        corteClienteService.processar()
     }
 
     def initConfig() {
@@ -19,6 +27,11 @@ class BootStrap {
     }
 
     def initializeFixture() {
+        AdministradoraFixture.execute()
+        ClienteFixture.execute()
+        PlanoPagamentoFixture.execute()
+        UnidadeMedidaFixture.execute()
+
         if (!Estado.findBySigla('PA'))
             new Estado(sigla: 'PA', nome: 'Pará').save(flush: true)
 

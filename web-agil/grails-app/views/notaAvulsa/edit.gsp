@@ -26,11 +26,12 @@
                 </g:eachError>
             </ul>
             </g:hasErrors>
-            <g:form resource="${this.notaAvulsa}" method="PUT">
+            <g:form resource="${this.notaAvulsa}">
                 <g:hiddenField name="version" value="${this.notaAvulsa?.version}" />
                 <g:render template="form" bean="notaAvulsa" />
                 %{--<f:all bean="notaAvulsa"/>--}%
-                <input class="btn btn-default" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
+                <bs:updateButton />
+                %{--<input class="btn btn-default" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />--}%
             </g:form>
         </div>
     </body>

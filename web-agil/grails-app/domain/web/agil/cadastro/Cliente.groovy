@@ -1,5 +1,6 @@
 package web.agil.cadastro
 
+
 class Cliente extends Papel {
 
     String vendedor
@@ -9,8 +10,7 @@ class Cliente extends Papel {
     }
 
     def beforeInsert() {
-        if (!dateCreated)
-            dateCreated = new Date()
+        super.beforeInsert()
         if (!codigo)
             codigo = "C${sprintf('%05d', Papel.count() + 1)}"
     }

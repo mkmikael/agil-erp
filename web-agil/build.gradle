@@ -48,6 +48,7 @@ dependencies {
 //    compile "org.grails.plugins:gbfaces:0.1"
     compile "org.grails.plugins:export:2.0.0"
     runtime 'org.grails.plugins:grails-console:2.0.6'
+    compile 'org.grails.plugins:quartz:2.0.9'
 
     compile 'com.github.wmixvideo:nfe:2.0.0'
 

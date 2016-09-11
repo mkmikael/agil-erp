@@ -59,6 +59,7 @@
             <g:sortableColumn title="Nome Fantasia" property="participante.nomeFantasia" params="${params}" />
             <th>Endereço</th>
             <g:sortableColumn title="Status" property="statusPapel" params="${params}" />
+            <g:sortableColumn title="Status Financeiro" property="statusFinanceiro" params="${params}" />
             </thead>
             <tbody>
             <g:each in="${clienteList}" var="c">
@@ -82,6 +83,7 @@
                     <td>${p.nomeFantasia}</td>
                     <td>${p.endereco}</td>
                     <td>${c.statusPapel}</td>
+                    <td>${c.statusFinanceiro}</td>
                 </tr>
             </g:each>
             </tbody>

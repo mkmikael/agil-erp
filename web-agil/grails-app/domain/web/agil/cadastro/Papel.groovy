@@ -1,6 +1,8 @@
 package web.agil.cadastro
 
 import web.agil.cadastro.enums.StatusPapel
+import web.agil.financeiro.enums.StatusFinanceiro
+import web.agil.financeiro.planoPagamento.PlanoPagamento
 
 class Papel {
 
@@ -8,16 +10,20 @@ class Papel {
     Date lastUpdated
     String codigo
     StatusPapel statusPapel = StatusPapel.ATIVO
+    StatusFinanceiro statusFinanceiro = StatusFinanceiro.EM_DIA
+    PlanoPagamento planoPagamento
 
     static belongsTo = [participante: Participante]
     static constraints = {
-        dateCreated nullable: true
-        lastUpdated nullable: true
-        codigo nullable: true
+        statusFinanceiro nullable: true
+        dateCreated      nullable: true
+        lastUpdated      nullable: true
+        codigo           nullable: true
+        planoPagamento   nullable: true
     }
 
     String toString() {
-        participante?.nome ?: participante?.nomeFantasia ?: super.toString()
+        participante ?: super.toString()
     }
 
     def beforeInsert() {
@@ -28,7 +34,6 @@ class Papel {
     }
 
     def beforeUpdate() {
-        if (!lastUpdated)
-            lastUpdated = new Date()
+        lastUpdated = new Date()
     }
 }

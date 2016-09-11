@@ -24,4 +24,9 @@ class NotaComercial {
         if (!dataEmissao)
             dataEmissao = new Date()
     }
+
+    EventoFinanceiro getEventoFinanceiro() {
+        EventoFinanceiro.findByNotaComercial(this)
+    }
+
 }

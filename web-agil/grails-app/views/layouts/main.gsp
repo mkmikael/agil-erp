@@ -37,6 +37,15 @@
                     %{--<li><a href="${createLink(controller: 'estatistica')}" class="navbar-link">Meta Vendedores</a></li>--}%
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Financeiro <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="${createLink(controller: 'eventoFinanceiro', action: 'create')}" class="navbar-link">Eventos Financeiros</a></li>
+                            <li><a href="${createLink(controller: 'lancamento')}" class="navbar-link">CAR</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             Cadastros <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">

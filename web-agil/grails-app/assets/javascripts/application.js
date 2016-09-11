@@ -65,6 +65,7 @@ function applyMaskElement(inputMask, mask) {
 function applyMask() {
     $('.cpf').mask('000.000.000-00', { placeholder: '___.___.___-__'});
     $('.cnpj').mask('00.000.000/0000-00', { placeholder: '__.___.___/____-__'});
+    $('.money').maskMoney({ thousands: '.', decimal: ',', allowZero: true });
     var inputs = $('[data-mask]');
     inputs.each(function (i, input) {
         var inputMask = $(input);

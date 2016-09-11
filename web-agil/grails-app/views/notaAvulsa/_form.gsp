@@ -1,4 +1,4 @@
-<%@ page import="web.agil.cadastro.Vendedor; web.agil.financeiro.enums.TipoNotaFiscal; web.agil.cadastro.enums.FormaPagamento; web.agil.cadastro.Cliente" %>
+<%@ page import="web.agil.financeiro.planoPagamento.IntervaloPagamento; web.agil.financeiro.planoPagamento.ConjuntoIntervaloPgto; web.agil.cadastro.Vendedor; web.agil.financeiro.enums.TipoNotaFiscal; web.agil.cadastro.enums.FormaPagamento; web.agil.cadastro.Cliente" %>
 <asset:javascript src="web-agil/notaAvulsa/form" />
 
 <g:hiddenField name="itemSize" value="${notaAvulsa.itens?.size()}" />
@@ -15,11 +15,14 @@
             </div>
 
             <div class="form-group col-md-3">
-                <label class="control-label" for="notaAvulsa.dataVencimento">Data Vencimento</label>
-                <div>
-                    <g:datePicker name="notaAvulsa.dataVencimento" value="${notaAvulsa.dataVencimento}" precision="day" />
-                </div>
+                <label class="control-label" for="notaAvulsa.formaPagamento">Forma de PGTO</label>
+                <g:select name="notaAvulsa.formaPagamento" class="form-control" from="${FormaPagamento.values()}" value="${notaAvulsa.formaPagamento}" />
             </div>
+
+            <bs:fieldGroup name="intervalos" label="Prazo" type="multiple"
+                           class="selectpicker" classGroup="col-md-3"
+                           from="${IntervaloPagamento.findAllByAtivo(true, [sort: 'dias'])}"
+                           optionKey="id" optionValue="dias" required="${true}" />
 
             <div class="form-group col-md-3">
                 <label class="control-label" for="notaAvulsa.tipo">Vendedor</label>
@@ -34,22 +37,14 @@
                 <label class="control-label" for="notaAvulsa.cliente.id">Cliente</label>
                 <g:select name="notaAvulsa.cliente.id" class="form-control select2"
                           from="${clienteList}" value="${notaAvulsa.cliente?.id}"
-                          optionKey="id" optionValue="${{"${it.participante?.nomeFantasia} - ${it.participante?.nome}"}}"
+                          optionKey="id" optionValue="participante"
                           noSelection="['': '']" required=""/>
-            </div>
-
-            <div class="form-group col-md-3">
-                <label class="control-label" for="notaAvulsa.formaPagamento">Forma de PGTO</label>
-                <g:select name="notaAvulsa.formaPagamento" class="form-control" from="${FormaPagamento.values()}" value="${notaAvulsa.formaPagamento}" />
             </div>
 
             <div class="form-group col-md-3">
                 <label class="control-label" for="notaAvulsa.tipo">Natureza da Operação</label>
                 <g:select name="notaAvulsa.tipo" class="form-control" from="${TipoNotaFiscal.values()}" value="${notaAvulsa.tipo}" />
             </div>
-
-        </div> <!-- row -->
-        <div class="row">
 
         </div> <!-- row -->
     </div> <!-- panel-body -->

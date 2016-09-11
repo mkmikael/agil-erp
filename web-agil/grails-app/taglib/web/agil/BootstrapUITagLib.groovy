@@ -36,12 +36,15 @@ class BootstrapUITagLib {
     def fieldGroup = { attrs, body ->
         def inline = attrs.inline ?: false
         def classGroup = attrs.classGroup ?: ''
-        if (attrs.type == 'select') {
+        if (attrs.type == 'select' || attrs.type == 'multiple') {
             if (attrs.class)
                 attrs.class += ' form-control'
             else
                 attrs.class = 'form-control'
-
+            if (attrs.type == 'multiple') {
+                attrs.type = 'select'
+                attrs.multiple = ''
+            }
             out << """
             <div class="form-group $classGroup">
                 ${label(attrs)}

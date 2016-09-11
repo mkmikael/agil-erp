@@ -1,4 +1,4 @@
-package web.agil
+package web.agil.cadastro
 
 import web.agil.cadastro.Estado
 

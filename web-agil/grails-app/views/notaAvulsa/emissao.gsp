@@ -142,10 +142,6 @@ table td { text-align: left; }
                     <span class="value">${notaAvulsa.codigo}</span>
                 </span>
                 <span class="field">
-                    <span class="label">Data Vencimento</span>
-                    <span class="value">${notaAvulsa.dataVencimento?.format('dd/MM/yyyy')}</span>
-                </span>
-                <span class="field">
                     <span class="label">Valor</span>
                     <span class="value"><g:formatNumber number="${notaAvulsa.total}" type="currency" /></span>
                 </span>
@@ -171,6 +167,22 @@ table td { text-align: left; }
                 <td>${item.quantidade}</td>
                 <td><g:formatNumber number="${item.preco}" type="currency" currencySymbol="" /></td>
                 <td><g:formatNumber number="${item.total}" type="currency" currencySymbol="" /></td>
+            </tr>
+        </g:each>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <th colspan="2">Boletos</th>
+        </tr>
+        <tr>
+            <th>Data Vencimento</th>
+            <th>Valor</th>
+        </tr>
+        <g:each in="${notaAvulsa?.eventoFinanceiro?.lancamentos}" var="l">
+            <tr>
+                <td>${l.dataPrevista.format('dd/MM/yyyy')}</td>
+                <td><g:formatNumber number="${l.valor}" locale="pt_BR" type="currency" /></td>
             </tr>
         </g:each>
     </table>
