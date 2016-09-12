@@ -32,8 +32,8 @@ class CorteClienteService {
             } else {
                 cliente.statusFinanceiro = StatusFinanceiro.EM_DIA
             }
-            batchService.gormClean(i, 50)
             log.debug "Cliente: ${cliente}, ${cliente.statusFinanceiro}"
+            batchService.gormClean(i, 50)
         }
         log.debug "...Corte clientes"
     }
