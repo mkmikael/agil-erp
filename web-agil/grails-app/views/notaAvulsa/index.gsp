@@ -1,3 +1,4 @@
+<%@ page import="web.agil.financeiro.enums.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,8 +18,16 @@
     <div class="panel-heading">
         <h4><g:message code="default.list.label" args="[entityName]" /></h4>
     </div> <!-- panel-heading -->
+
     <div class="panel-body">
         <g:render template="/layouts/message" />
+
+        <bs:panelFilter>
+            <g:form>
+                <bs:fieldGroup inline="${true}" type="select" label="Status Nota" name="statusEvento" value="${statusEvento}"
+                     from="${StatusEventoFinanceiro.values()}" noSelection="['': 'TODOS']" />
+            </g:form>
+        </bs:panelFilter>
 
         <table data-bs-table>
             <thead>

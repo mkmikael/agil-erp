@@ -66,6 +66,8 @@ class EventoFinanceiro {
 
     def cancelar() {
         if (isCancelado()) {
+            throw new RuntimeException('O evento já esta cancelado.')
+        } else {
             status = StatusEventoFinanceiro.CANCELADO
             def lancs = Lancamento.createCriteria().list {
                 eq('evento', this)
@@ -73,8 +75,7 @@ class EventoFinanceiro {
             lancs.each { Lancamento l ->
                 l.cancelar()
             }
-        } else
-            throw new RuntimeException('O evento já esta cancelado.')
+        }
     }
 
 }

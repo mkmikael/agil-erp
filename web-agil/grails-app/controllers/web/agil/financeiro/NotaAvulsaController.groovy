@@ -22,12 +22,16 @@ class NotaAvulsaController {
             params.sort = 'dataEmissao'
         if (!params.order)
             params.order = 'desc'
-
         def where = {
+            if (params.statusEvento) {
+                evento {
+                    eq('status', StatusEventoFinanceiro.valueOf(params.statusEvento))
+                }
+            }
         }
         def notaAvulsaList = NotaAvulsa.createCriteria().list(params, where)
         def notaAvulsaCount = NotaAvulsa.createCriteria().count(where)
-        if (!params.status) {
+        if (!params.statusEvento) {
             def toRemove = []
             notaAvulsaList.each { n ->
                 if (n.evento?.status == StatusEventoFinanceiro.CANCELADO)
@@ -36,7 +40,7 @@ class NotaAvulsaController {
             notaAvulsaList.removeAll(toRemove)
             notaAvulsaCount -= toRemove.size()
         }
-        respond notaAvulsaList, model: [notaAvulsaCount: notaAvulsaCount]
+        respond notaAvulsaList, model: [notaAvulsaCount: notaAvulsaCount] + params
     }
 
     def show(NotaAvulsa notaAvulsa) {
