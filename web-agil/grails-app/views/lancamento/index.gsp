@@ -21,7 +21,6 @@
                 <bs:fieldGroup name="papel" label="Cliente" value="${papel}" />
                 <bs:fieldGroup name="status" inline="${true}" type="select" label="Status Lançamento"
                     from="${StatusLancamento.values()}" value="${status}" class="selectpicker" multiple="" />
-                <p> <span class="glyphicon glyphicon-info-sign"></span> O status lançamento selecionado é para não aparecer na listagem</p>
                 <div class="form-inline">
                     <bs:fieldGroup name="dataPrevista_inicio" class="datepicker" label="Data Prevista" value="${dataPrevista_inicio}" inline="${true}" /> Até
                     <bs:fieldGroup name="dataPrevista_fim" class="datepicker" value="${dataPrevista_fim}" inline="${true}" />
