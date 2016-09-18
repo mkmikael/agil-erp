@@ -16,15 +16,17 @@ class EventoFinanceiro {
     PlanoPagamento planoPagamento
     TipoEventoFinanceiro tipo
     StatusEventoFinanceiro status = StatusEventoFinanceiro.BAIXADO
-    NotaComercial notaComercial
     BigDecimal valor
 
+    static belongsTo = [notaComercial: NotaComercial]
+    static hasMany = [lancamentos: Lancamento]
     static constraints = {
-        codigo        nullable: true
-        papel         nullable: true
-        dateCreated   nullable: true
-        lastUpdated   nullable: true
-        notaComercial nullable: true
+        codigo         nullable: true
+        papel          nullable: true
+        dateCreated    nullable: true
+        lastUpdated    nullable: true
+        notaComercial  nullable: true
+        planoPagamento nullable: true
         valor scale: 6
     }
 
@@ -50,7 +52,7 @@ class EventoFinanceiro {
         conjunto
     }
 
-    void addAllToIntervalo(List ids) {
+    void addToAllIntervalo(List ids) {
         ids.each {
             def id = (it as Long)
             def intervalo = IntervaloPagamento.get(id)
@@ -58,8 +60,12 @@ class EventoFinanceiro {
         }
     }
 
+    Boolean isCancelado() {
+        status == StatusEventoFinanceiro.CANCELADO
+    }
+
     def cancelar() {
-        if (status != StatusEventoFinanceiro.CANCELADO) {
+        if (isCancelado()) {
             status = StatusEventoFinanceiro.CANCELADO
             def lancs = Lancamento.createCriteria().list {
                 eq('evento', this)
@@ -69,10 +75,6 @@ class EventoFinanceiro {
             }
         } else
             throw new RuntimeException('O evento já esta cancelado.')
-    }
-
-    List<Lancamento> getLancamentos() {
-        Lancamento.withCriteria { eq('evento', this) }
     }
 
 }

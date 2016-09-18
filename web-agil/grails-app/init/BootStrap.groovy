@@ -15,6 +15,7 @@ class BootStrap {
     CorteClienteService corteClienteService
 
     def init = { servletContext ->
+        // TODO - alter table evento_financeiro column plano_pagamento_id nullable
         Locale.default = new Locale('pt', 'BR')
         initializeFixture()
         initConfig()

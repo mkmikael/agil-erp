@@ -2,6 +2,8 @@
 <asset:javascript src="web-agil/notaAvulsa/form" />
 
 <g:hiddenField name="itemSize" value="${notaAvulsa.itens?.size()}" />
+<g:hiddenField name="oldId" value="${oldId}" />
+
 
 <div class="panel panel-default">
     <div class="panel-heading">Dados Gerais</div>
@@ -22,7 +24,7 @@
             <bs:fieldGroup name="intervalos" label="Prazo" type="multiple"
                            class="selectpicker" classGroup="col-md-3"
                            from="${IntervaloPagamento.findAllByAtivo(true, [sort: 'dias'])}"
-                           optionKey="id" optionValue="dias" required="${true}" />
+                           optionKey="id" optionValue="dias" noSelection="['': '']" />
 
             <div class="form-group col-md-3">
                 <label class="control-label" for="notaAvulsa.tipo">Vendedor</label>

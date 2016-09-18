@@ -16,6 +16,7 @@ class ImportNotaFiscalService {
     SessionFactory sessionFactory
     def grailsApplication
     def importProdutoSEFAService
+    LancamentoService lancamentoService
     ImportClienteService importClienteService
 
     def execute() {
@@ -89,6 +90,8 @@ class ImportNotaFiscalService {
             nf.clienteNome = cliente
             nf.total = new BigDecimal(valorTotal)
             nf.save(failOnError: true)
+
+//            lancamentoService.criarLancamentos()
 
             infNFe.det.each { det ->
                 createItemNotaFiscal(det, nf)

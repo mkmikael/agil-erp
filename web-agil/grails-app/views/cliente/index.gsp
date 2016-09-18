@@ -1,4 +1,4 @@
-<%@ page import="web.agil.cadastro.Organizacao; web.agil.cadastro.Pessoa; web.agil.cadastro.enums.StatusPapel" %>
+<%@ page import="web.agil.cadastro.*; web.agil.financeiro.*; web.agil.financeiro.enums.*; web.agil.cadastro.enums.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,6 +39,8 @@
                     <div class="row">
                         <bs:fieldGroup type="select" label="Status" name="statusPapel" classGroup="col-md-2"
                                        value="${statusPapel}" from="${StatusPapel.values()}" />
+                       <bs:fieldGroup type="select" label="Status" name="statusFinanceiro" classGroup="col-md-2"
+                                      value="${statusFinanceiro}" from="${StatusFinanceiro.values()}" />
                     </div>
                     <button type="submit" class="btn btn-default">
                         <span class="glyphicon glyphicon-search"></span> Procurar
@@ -67,7 +69,7 @@
                     <td>
                         <g:link action="show" id="${c.id}">${c.id}</g:link>
                     </td>
-                    <td><g:formatDate number="${c.dateCreated}" format="dd/MM/yyyy" /></td>
+                    <td><g:formatDate date="${c.dateCreated}" format="dd/MM/yyyy" /></td>
                     <td>${c.codigo}</td>
                     <g:set var="p" value="${c.participante}" />
                     <g:if test="${p instanceof Pessoa}">

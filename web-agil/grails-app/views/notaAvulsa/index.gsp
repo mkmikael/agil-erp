@@ -26,7 +26,6 @@
             <g:sortableColumn property="doc" params="${params}" title="CPF/CNPJ" />
             <g:sortableColumn property="nome" params="${params}" title="Nome/Razão Social" />
             <g:sortableColumn property="dataEmissao" params="${params}" title="Dt Emissão" />
-            <g:sortableColumn property="dataVencimento" params="${params}" title="Dt Vencimento" />
             <g:sortableColumn property="valorTotal" params="${params}" title="Valor Total" />
             </thead>
             <tbody>
@@ -35,8 +34,7 @@
                     <td><g:link action="show" id="${notaAvulsa.id}">${notaAvulsa.codigo}</g:link></td>
                     <td>${notaAvulsa.cliente.participante.doc}</td>
                     <td>${notaAvulsa.cliente}</td>
-                    <td><g:formatDate date="${notaAvulsa.dataEmissao}" format="dd/MM/yyyy HH:mm" /></td>
-                    <td><g:formatDate date="${notaAvulsa.dataVencimento}" format="dd/MM/yyyy" /></td>
+                    <td><g:formatDate date="${notaAvulsa.dataEmissao}" format="dd/MM/yyyy" /></td>
                     <td><g:formatNumber number="${notaAvulsa.total}" type="currency" /></td>
                 </tr>
             </g:each>

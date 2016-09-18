@@ -21,9 +21,10 @@ class NotaAvulsa extends NotaComercial {
         total
     }
 
-    def afterInsert() {
+    def beforeInsert() {
+        super.beforeInsert()
         if (!codigo)
-            codigo = sprintf("%08d", NotaAvulsa.count())
+            codigo = sprintf("%06d", NotaAvulsa.count() + 1)
     }
 
 }

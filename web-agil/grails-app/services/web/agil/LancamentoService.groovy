@@ -43,13 +43,18 @@ class LancamentoService {
         model
     }
 
+    def criarLancamentos(NotaComercial nota) {
+        criarLancamentos(nota, [])
+    }
+
     def criarLancamentos(NotaComercial nota, List intervaloIds) {
         def evento = new EventoFinanceiro()
         evento.papel = nota.cliente
         evento.tipo = TipoEventoFinanceiro.NOTA_AVULSA
         evento.notaComercial = nota
         evento.valor = nota.total
-        evento.addAllToIntervalo(intervaloIds)
+        if (intervaloIds)
+            evento.addToAllIntervalo(intervaloIds)
         evento.save(failOnError: true)
         criarLancamentos(evento, nota.dataEmissao)
     }
@@ -63,12 +68,16 @@ class LancamentoService {
      * @return
      */
     def criarLancamentos(EventoFinanceiro evento, Date dataReferencia) {
-        ConjuntoIntervaloPgto conjunto = evento.planoPagamento
-        def datas = conjunto.getDatasPrevistas(dataReferencia)
-        def parcelas = datas.size()
-        datas.each { dataPrevista ->
-            def valor = evento.valor / parcelas
-            criarLancamento(evento: evento, valor: valor, papel: evento.papel, dataOriginal: dataPrevista)
+        if (evento.planoPagamento) {
+            ConjuntoIntervaloPgto conjunto = evento.planoPagamento
+            def datas = conjunto.getDatasPrevistas(dataReferencia)
+            def parcelas = datas.size()
+            datas.each { dataPrevista ->
+                def valor = evento.valor / parcelas
+                criarLancamento(evento: evento, valor: valor, papel: evento.papel, dataOriginal: dataPrevista)
+            }
+        } else {
+            criarLancamento(evento: evento, valor: evento.valor, papel: evento.papel, dataOriginal: dataReferencia, status: StatusLancamento.PAGO)
         }
     }
 

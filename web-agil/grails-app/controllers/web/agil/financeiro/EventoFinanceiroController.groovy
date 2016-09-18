@@ -33,7 +33,7 @@ class EventoFinanceiroController {
         def eventoFinanceiro = new EventoFinanceiro(params)
 
         def intervalos = params.list('intervalos')
-        eventoFinanceiro.addAllToIntervalo(intervalos)
+        eventoFinanceiro.addToAllIntervalo(intervalos)
         def dataReferencia = Date.parse('dd/MM/yyyy', params.dataReferencia)
         lancamentoService.criarLancamentos(eventoFinanceiro, dataReferencia)
 

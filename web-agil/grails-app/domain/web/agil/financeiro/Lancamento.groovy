@@ -12,10 +12,10 @@ class Lancamento {
     Date dataPrevista
     Date dataEfetivacao
     BigDecimal valor
-    EventoFinanceiro evento
     TipoLancamento tipo = TipoLancamento.RECEBER
     StatusLancamento status = StatusLancamento.ABERTO
 
+    static belongsTo = [evento: EventoFinanceiro]
     static constraints = {
         dateCreated     nullable: true
         lastUpdated     nullable: true

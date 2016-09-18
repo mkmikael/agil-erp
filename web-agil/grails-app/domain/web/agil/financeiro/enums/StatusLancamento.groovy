@@ -5,6 +5,6 @@ package web.agil.financeiro.enums
  */
 enum StatusLancamento {
 
-    ABERTO, BAIXADO, PAGO, CANCELADO
+    ABERTO, BAIXADO, PAGO, CANCELADO, ATRASADO
 
 }

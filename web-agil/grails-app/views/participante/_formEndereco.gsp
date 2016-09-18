@@ -4,7 +4,7 @@
 </div>
 
 <div class="row">
-    <bs:fieldGroup name="endereco.numero" label="Nº" value="${endereco?.numero}" classGroup="col-md-1" required="required" />
+    <bs:fieldGroup name="endereco.numero" label="Nº" value="${endereco?.numero}" classGroup="col-md-1" />
     <bs:fieldGroup name="endereco.logradouro" label="Logradouro" value="${endereco?.logradouro}" classGroup="col-md-5" required="required" />
 </div>
 

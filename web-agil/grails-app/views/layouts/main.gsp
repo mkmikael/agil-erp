@@ -40,7 +40,7 @@
                             Financeiro <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="${createLink(controller: 'eventoFinanceiro', action: 'create')}" class="navbar-link">Eventos Financeiros</a></li>
+                            %{-- <li><a href="${createLink(controller: 'eventoFinanceiro', action: 'create')}" class="navbar-link">Eventos Financeiros</a></li> --}%
                             <li><a href="${createLink(controller: 'lancamento')}" class="navbar-link">CAR</a></li>
                         </ul>
                     </li>

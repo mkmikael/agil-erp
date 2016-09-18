@@ -2,6 +2,7 @@ package web.agil.financeiro
 
 import web.agil.LancamentoService
 import web.agil.financeiro.enums.StatusLancamento
+import web.agil.financeiro.enums.StatusLancamento as SL
 
 class LancamentoController {
 
@@ -10,14 +11,30 @@ class LancamentoController {
     def index() {
         params.max = Math.min(params.int('max') ?: 30, 100)
         if (!params.sort)
-            params.sort = 'dataPrevista'
-        def model = lancamentoService.lancamentoListAndCount(params)
-        def lancamentoList = model.lancamentoList
-        def valorTotalAberto = Lancamento.getValorTotal(StatusLancamento.ABERTO)
-        def valorTotalPago   = Lancamento.getValorTotal(StatusLancamento.PAGO)
-        respond lancamentoList, model: [lancamentoCount: model.lancamentoCount,
-                                        valorTotalAberto: valorTotalAberto,
-                                        valorTotalPago: valorTotalPago] + params
+            params.sort = 'codigo'
+        def where = {
+            papel {
+                participante {
+                    if (params.nome)
+                        ilike('nome', "%${params.nome}%")
+                }
+            }
+            lancamentos {
+                if (params.dataPrevista_inicio)
+                    ge('dataPrevista', Date.parse('dd/MM/yyyy', params.dataPrevista_inicio))
+                if (params.dataPrevista_fim)
+                    le('dataPrevista', Date.parse('dd/MM/yyyy', params.dataPrevista_fim))
+            }
+        }
+        def eventoList  = EventoFinanceiro.createCriteria().list(params, where)
+        def eventoCount = EventoFinanceiro.createCriteria().count(where)
+        def valorTotalAberto   = Lancamento.getValorTotal(StatusLancamento.ABERTO)
+        def valorTotalAtrasado = Lancamento.getValorTotal(StatusLancamento.ATRASADO)
+        def valorTotalPago     = Lancamento.getValorTotal(StatusLancamento.PAGO)
+        [eventoCount: eventoCount, eventoList: eventoList,
+            valorTotalAberto:   valorTotalAberto,
+            valorTotalAtrasado: valorTotalAtrasado,
+            valorTotalPago:     valorTotalPago] + params
     }
 
     def pago(Long id) {
@@ -26,6 +43,10 @@ class LancamentoController {
 
     def aberto(Long id) {
         updateStatus(id, StatusLancamento.ABERTO)
+    }
+
+    def atrasado(Long id) {
+        updateStatus(id, StatusLancamento.ATRASADO)
     }
 
     def cancelar(Lancamento lancamento) {
@@ -37,9 +58,12 @@ class LancamentoController {
         def lanc = Lancamento.get(id)
         lanc.status = status
         lanc.save(flush: true)
-        def valorTotalAberto = Lancamento.getValorTotal(StatusLancamento.ABERTO)
-        def valorTotalPago   = Lancamento.getValorTotal(StatusLancamento.PAGO)
-        render template: 'dados', model: [valorTotalAberto: valorTotalAberto, valorTotalPago: valorTotalPago]
+        def valorTotalAberto   = Lancamento.getValorTotal(StatusLancamento.ABERTO)
+        def valorTotalAtrasado = Lancamento.getValorTotal(StatusLancamento.ATRASADO)
+        def valorTotalPago     = Lancamento.getValorTotal(StatusLancamento.PAGO)
+        render template: 'dados', model: [valorTotalAberto: valorTotalAberto,
+            valorTotalPago: valorTotalPago,
+            valorTotalAtrasado: valorTotalAtrasado]
     }
 
 }

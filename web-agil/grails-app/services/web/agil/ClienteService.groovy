@@ -3,6 +3,7 @@ package web.agil
 import grails.transaction.Transactional
 import web.agil.cadastro.Cliente
 import web.agil.cadastro.enums.StatusPapel
+import web.agil.financeiro.enums.StatusFinanceiro
 import web.agil.util.Util
 
 @Transactional
@@ -17,6 +18,8 @@ class ClienteService {
         def criteria = {
             if (params.statusPapel)
                 eq('statusPapel', StatusPapel.valueOf(params.statusPapel))
+            if (params.statusFinanceiro)
+                eq('statusFinanceiro', StatusFinanceiro.valueOf(params.statusFinanceiro))
             if (params.id)
                 eq('id', params.id as Long)
             if (params.codigo)

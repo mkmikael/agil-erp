@@ -2,9 +2,12 @@ package web.agil.financeiro
 
 import web.agil.LancamentoService
 import web.agil.cadastro.Cliente
+import web.agil.financeiro.enums.StatusEventoFinanceiro
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+
+import org.hibernate.FetchMode as FM
 
 @Transactional(readOnly = true)
 class NotaAvulsaController {
@@ -19,7 +22,21 @@ class NotaAvulsaController {
             params.sort = 'dataEmissao'
         if (!params.order)
             params.order = 'desc'
-        respond NotaAvulsa.list(params), model:[notaAvulsaCount: NotaAvulsa.count()]
+
+        def where = {
+        }
+        def notaAvulsaList = NotaAvulsa.createCriteria().list(params, where)
+        def notaAvulsaCount = NotaAvulsa.createCriteria().count(where)
+        if (!params.status) {
+            def toRemove = []
+            notaAvulsaList.each { n ->
+                if (n.evento?.status == StatusEventoFinanceiro.CANCELADO)
+                    toRemove << n
+            }
+            notaAvulsaList.removeAll(toRemove)
+            notaAvulsaCount -= toRemove.size()
+        }
+        respond notaAvulsaList, model: [notaAvulsaCount: notaAvulsaCount]
     }
 
     def show(NotaAvulsa notaAvulsa) {
@@ -39,7 +56,7 @@ class NotaAvulsaController {
         } else {
             notaAvulsa = new NotaAvulsa(params)
         }
-        respond notaAvulsa, model: [clienteList: clienteList]
+        respond notaAvulsa, model: [clienteList: clienteList, oldId: id]
     }
 
     @Transactional
@@ -55,10 +72,19 @@ class NotaAvulsaController {
             respond notaAvulsa.errors, view:'create'
             return
         }
+
         notaAvulsa.calcularTotal()
         notaAvulsa.save failOnSave:true
         List intervalosIds = params.list('intervalos')
         lancamentoService.criarLancamentos(notaAvulsa, intervalosIds)
+
+        if (params.oldId) {
+            def oldId = params.long('oldId')
+            def notaAnterior = NotaAvulsa.get(oldId)
+            if (notaAnterior.eventoFinanceiro && !notaAnterior.isCancelado()) {
+                notaAnterior.cancelar()
+            }
+        }
 
         request.withFormat {
             form multipartForm {
@@ -67,6 +93,7 @@ class NotaAvulsaController {
             }
             '*' { respond notaAvulsa, [status: CREATED] }
         }
+
     }
 
     def edit(NotaAvulsa notaAvulsa) {
@@ -141,4 +168,5 @@ class NotaAvulsaController {
             '*'{ render status: NOT_FOUND }
         }
     }
+
 }

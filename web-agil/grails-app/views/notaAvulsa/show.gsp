@@ -113,7 +113,7 @@
         <g:link class="btn btn-default" resource="${this.notaAvulsa}" action="emissao">
             <span class="glyphicon glyphicon-print"></span> Imprimir
         </g:link>
-        <g:if test="${notaAvulsa != StatusEventoFinanceiro.CANCELADO}">
+        <g:if test="${notaAvulsa?.isCancelado()}">
             <g:form controller="eventoFinanceiro" action="cancelar"
                     id="${evento?.id}" style="display: inline-block">
                 <button class="btn btn-default" type="submit" onclick="return confirm('Você tem certeza?')">

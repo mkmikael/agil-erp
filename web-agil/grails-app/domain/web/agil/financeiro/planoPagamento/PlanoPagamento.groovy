@@ -6,10 +6,8 @@ class PlanoPagamento {
 
     Date dateCreated
     Date lastUpdated
-    String display
     Boolean ativo = true
 
-    static transients = ['display']
     static belongsTo = [administradora: Administradora]
     static constraints = {
         dateCreated nullable: true
@@ -17,7 +15,13 @@ class PlanoPagamento {
         administradora nullable: true
     }
 
-    List<Date> getDatasPrevistas(Date dataReferencia) {}
+    String getDisplay() {
+        "Avista"
+    }
+
+    List<Date> getDatasPrevistas(Date dataReferencia) {
+        [new Date()]
+    }
 
     def beforeInsert() {
         if (!dateCreated)

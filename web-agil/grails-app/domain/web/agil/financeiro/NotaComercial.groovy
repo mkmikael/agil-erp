@@ -13,8 +13,10 @@ class NotaComercial {
     TipoNotaFiscal tipo = TipoNotaFiscal.VENDA
     Vendedor vendedor
 
+    static hasOne = [evento: EventoFinanceiro]
     static hasMany = [itens: ItemNotaComercial]
     static constraints = {
+        evento nullable: true
         codigo nullable: true
         total nullable: true, scale: 6
         vendedor nullable: true
@@ -27,6 +29,16 @@ class NotaComercial {
 
     EventoFinanceiro getEventoFinanceiro() {
         EventoFinanceiro.findByNotaComercial(this)
+    }
+
+    def cancelar() {
+        def eventoAnterior = getEventoFinanceiro()
+        eventoAnterior?.cancelar()
+    }
+
+    def isCancelado() {
+      def eventoAnterior = getEventoFinanceiro()
+      eventoAnterior?.isCancelado()
     }
 
 }
