@@ -25,7 +25,7 @@ environments:
     production:
         dataSource:
             dbCreate: update
-            url: jdbc:postgresql://localhost/agil_production_3
+            url: jdbc:postgresql://localhost/agil_production
             properties:
                 jmxEnabled: true
                 initialSize: 5

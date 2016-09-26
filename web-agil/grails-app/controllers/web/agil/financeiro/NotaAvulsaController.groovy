@@ -3,6 +3,7 @@ package web.agil.financeiro
 import web.agil.LancamentoService
 import web.agil.cadastro.Cliente
 import web.agil.financeiro.enums.StatusEventoFinanceiro
+import web.agil.financeiro.enums.TipoNotaFiscal
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -79,8 +80,10 @@ class NotaAvulsaController {
 
         notaAvulsa.calcularTotal()
         notaAvulsa.save failOnSave:true
-        List intervalosIds = params.list('intervalos')
-        lancamentoService.criarLancamentos(notaAvulsa, intervalosIds)
+        if (notaAvulsa.tipo == TipoNotaFiscal.VENDA) {
+            List intervalosIds = params.list('intervalos')
+            lancamentoService.criarLancamentos(notaAvulsa, intervalosIds)
+        }
 
         if (params.oldId) {
             def oldId = params.long('oldId')

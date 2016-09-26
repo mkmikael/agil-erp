@@ -9,45 +9,46 @@
     <div class="panel-heading">Dados Gerais</div>
     <div class="panel-body">
         <div class="row">
-            <div class="form-group col-md-3">
-                <label class="control-label" for="notaAvulsa.dataEmissao">Data Emissão</label>
-                <div>
-                    <g:datePicker name="notaAvulsa.dataEmissao" value="${notaAvulsa.dataEmissao}" precision="day" />
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="notaAvulsa.tipo">Natureza da Operação</label>
+                    <g:select name="notaAvulsa.tipo" class="form-control" from="${TipoNotaFiscal.values()}" value="${notaAvulsa.tipo}" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="notaAvulsa.dataEmissao">Data Emissão</label>
+                    <div>
+                        <g:datePicker name="notaAvulsa.dataEmissao" value="${notaAvulsa.dataEmissao}" precision="day" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="notaAvulsa.formaPagamento">Forma de PGTO</label>
+                    <g:select name="notaAvulsa.formaPagamento" class="form-control" from="${FormaPagamento.values()}" value="${notaAvulsa.formaPagamento}" />
+                </div>
+
+                <bs:fieldGroup name="intervalos" label="Prazo" type="multiple"
+                               class="selectpicker" classGroup="intervalosGroup"
+                               from="${IntervaloPagamento.findAllByAtivo(true, [sort: 'dias'])}"
+                               optionKey="id" optionValue="dias" noSelection="['': '']" />
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" for="notaAvulsa.cliente.id">Cliente</label>
+                    <g:select name="notaAvulsa.cliente.id" class="form-control select2"
+                              from="${clienteList}" value="${notaAvulsa.cliente?.id}"
+                              optionKey="id" optionValue="participante"
+                              noSelection="['': '']" required=""/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="notaAvulsa.tipo">Vendedor</label>
+                    <g:select name="notaAvulsa.vendedor.id" class="form-control"
+                              from="${Vendedor.list()}" value="${notaAvulsa.tipo}"
+                              optionKey="id" optionValue="${{it.participante.nome}}" noSelection="['':'']"/>
                 </div>
             </div>
-
-            <div class="form-group col-md-3">
-                <label class="control-label" for="notaAvulsa.formaPagamento">Forma de PGTO</label>
-                <g:select name="notaAvulsa.formaPagamento" class="form-control" from="${FormaPagamento.values()}" value="${notaAvulsa.formaPagamento}" />
-            </div>
-
-            <bs:fieldGroup name="intervalos" label="Prazo" type="multiple"
-                           class="selectpicker" classGroup="col-md-3"
-                           from="${IntervaloPagamento.findAllByAtivo(true, [sort: 'dias'])}"
-                           optionKey="id" optionValue="dias" noSelection="['': '']" />
-
-            <div class="form-group col-md-3">
-                <label class="control-label" for="notaAvulsa.tipo">Vendedor</label>
-                <g:select name="notaAvulsa.vendedor.id" class="form-control"
-                          from="${Vendedor.list()}" value="${notaAvulsa.tipo}"
-                          optionKey="id" optionValue="${{it.participante.nome}}" noSelection="['':'']"/>
-            </div>
-        </div> <!-- row -->
-
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label class="control-label" for="notaAvulsa.cliente.id">Cliente</label>
-                <g:select name="notaAvulsa.cliente.id" class="form-control select2"
-                          from="${clienteList}" value="${notaAvulsa.cliente?.id}"
-                          optionKey="id" optionValue="participante"
-                          noSelection="['': '']" required=""/>
-            </div>
-
-            <div class="form-group col-md-3">
-                <label class="control-label" for="notaAvulsa.tipo">Natureza da Operação</label>
-                <g:select name="notaAvulsa.tipo" class="form-control" from="${TipoNotaFiscal.values()}" value="${notaAvulsa.tipo}" />
-            </div>
-
         </div> <!-- row -->
     </div> <!-- panel-body -->
 </div>  <!-- panel -->

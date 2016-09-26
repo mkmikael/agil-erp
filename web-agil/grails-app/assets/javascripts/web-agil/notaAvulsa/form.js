@@ -39,11 +39,26 @@ function criarCliente() {
     });
 }
 
+function formaPGTO() {
+    var formaPGTO = $('#notaAvulsa\\.formaPagamento');
+    formaPGTO.change(function () {
+        var value = this.value;
+        console.log(value);
+        if (value == 'A_PRAZO') {
+            $('.intervalosGroup').show();
+        } else {
+            $('.intervalosGroup').hide();
+        }
+    });
+}
+
 var count = 0;
 
 $(function () {
+    $('.intervalosGroup').hide();
     apply();
     criarCliente();
+    formaPGTO();
     count = $('#tableItens tbody tr').length;
     $('#add').click(function () {
         var url = $('#baseUrl').val() + "notaAvulsa/itemLinha";
