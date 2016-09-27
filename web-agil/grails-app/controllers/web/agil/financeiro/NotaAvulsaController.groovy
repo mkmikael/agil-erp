@@ -38,7 +38,9 @@ class NotaAvulsaController {
                 if (n.evento?.status == StatusEventoFinanceiro.CANCELADO)
                     toRemove << n
             }
-            notaAvulsaList.removeAll(toRemove)
+            toRemove.each {
+                notaAvulsaList.remove(it)
+            }
             notaAvulsaCount -= toRemove.size()
         }
         respond notaAvulsaList, model: [notaAvulsaCount: notaAvulsaCount] + params
