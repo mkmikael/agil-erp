@@ -23,13 +23,15 @@ class NotaAvulsaController {
         params.max = Math.min(max ?: 40, 100)
         if (!params.sort)
             params.sort = 'dataEmissao'
-        if (!params.order)
-            params.order = 'desc'
         def where = {
             if (params.statusEvento) {
                 evento {
                     eq('status', StatusEventoFinanceiro.valueOf(params.statusEvento))
                 }
+            }
+            if (params.sort == 'dataEmissao') {
+                order 'dataEmissao', 'desc'
+                order 'id', 'desc'
             }
         }
 
@@ -43,6 +45,16 @@ class NotaAvulsaController {
             params.sort = 'dataEmissao'
             params.order = 'desc'
             notaAvulsaList = NotaAvulsa.createCriteria().list(params, where)
+            if (!params.statusEvento) {
+                def toRemove = []
+                notaAvulsaList.each { n ->
+                    if (n.evento?.status == StatusEventoFinanceiro.CANCELADO)
+                        toRemove << n
+                }
+                toRemove.each {
+                    notaAvulsaList.remove(it)
+                }
+            }
             def fields = ['codigo', 'cliente.participante.doc', 'cliente.participante.nomeFantasia', 'dataEmissao', 'total']
             def labels = [
                     'codigo': 'Codigo',
