@@ -29,6 +29,11 @@ class NotaAvulsaController {
                     eq('status', StatusEventoFinanceiro.valueOf(params.statusEvento))
                 }
             }
+        }
+
+        def criteria = {
+            where.delegate = delegate
+            where()
             if (params.sort == 'dataEmissao') {
                 order 'dataEmissao', 'desc'
                 order 'id', 'desc'
@@ -73,7 +78,7 @@ class NotaAvulsaController {
             return
         }
 
-        notaAvulsaList = NotaAvulsa.createCriteria().list(params, where)
+        notaAvulsaList = NotaAvulsa.createCriteria().list(params, criteria)
         def notaAvulsaCount = NotaAvulsa.createCriteria().count(where)
         if (!params.statusEvento) {
             def toRemove = []
