@@ -29,6 +29,8 @@
             </g:form>
         </bs:panelFilter>
 
+        <export:formats params="${params}" action="index" formats="['excel']" />
+        <br>
         <table data-bs-table>
             <thead>
             <g:sortableColumn property="codigo" params="${params}" title="Número Doc" />

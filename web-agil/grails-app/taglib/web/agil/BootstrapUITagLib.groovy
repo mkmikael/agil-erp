@@ -17,7 +17,6 @@ class BootstrapUITagLib {
         out << "<div class=\"panel-heading\">"
         out << """
 <a data-toggle="collapse" data-target="#filtros_$random" class="collapsed">
-    <span class="glyphicon glyphicon-expand"></span>
     <span style="font-size: 1.2em;">
         <span class="glyphicon glyphicon-filter"></span> Filtros
     </span>

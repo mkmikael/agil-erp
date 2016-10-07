@@ -1,5 +1,6 @@
 package web.agil.financeiro
 
+import grails.plugins.export.ExportService
 import web.agil.LancamentoService
 import web.agil.cadastro.Cliente
 import web.agil.financeiro.enums.StatusEventoFinanceiro
@@ -16,6 +17,7 @@ class NotaAvulsaController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     LancamentoService lancamentoService
+    ExportService exportService
 
     def index(Integer max) {
         params.max = Math.min(max ?: 40, 100)
@@ -30,7 +32,36 @@ class NotaAvulsaController {
                 }
             }
         }
-        def notaAvulsaList = NotaAvulsa.createCriteria().list(params, where)
+
+        def notaAvulsaList
+
+        if (params.f) {
+            params.remove('offset')
+            params.remove('max')
+            def fdate = new Date().format("dd-MM-yyyy HH:mm")
+            log.debug("R: Gerando relatorio de notas avulsa ${fdate}")
+            params.sort = 'dataEmissao'
+            params.order = 'desc'
+            notaAvulsaList = NotaAvulsa.createCriteria().list(params, where)
+            def fields = ['codigo', 'cliente.participante.doc', 'cliente.participante.nomeFantasia', 'dataEmissao', 'total']
+            def labels = [
+                    'codigo': 'Codigo',
+                    'cliente.participante.doc': 'CNPJ/CPF',
+                    'cliente.participante.nomeFantasia': 'Cliente',
+                    'dataEmissao': 'Dt Emissão',
+                    'total': 'Total'
+            ]
+            def formatters = [
+                    'cliente.participante.nomeFantasia': { NotaAvulsa n, v -> n.cliente.toString() }
+            ]
+            def filename = "notas avulsa ${fdate}"
+            def type = params.f.toString()
+            exportService.export(type, response, filename, "xls", notaAvulsaList, fields, labels, formatters, [:])
+            log.debug("R: Relatorio de notas avulsa gerado com ${notaAvulsaList.size()} registros")
+            return
+        }
+
+        notaAvulsaList = NotaAvulsa.createCriteria().list(params, where)
         def notaAvulsaCount = NotaAvulsa.createCriteria().count(where)
         if (!params.statusEvento) {
             def toRemove = []
