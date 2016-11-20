@@ -14,7 +14,7 @@ class BatchService {
     }
 
     def gormClean(int i, int max) {
-        if ((i + 1) % 80 == 0) {
+        if ((i + 1) % max == 0) {
             gormClean()
         }
     }

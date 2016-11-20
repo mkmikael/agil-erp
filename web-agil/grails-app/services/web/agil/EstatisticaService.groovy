@@ -4,6 +4,7 @@ import grails.transaction.Transactional
 import web.agil.cadastro.Cliente
 import web.agil.cadastro.Produto
 import web.agil.financeiro.ItemNotaComercial
+import web.agil.financeiro.NotaComercial
 import web.agil.financeiro.enums.TipoNotaFiscal
 
 @Transactional
@@ -97,10 +98,6 @@ class EstatisticaService {
             if (!bonificados) {
                 bonificados = [quant_boni: 0]
             }
-            println "Boni: " + bonificados.class
-            println "Resu: " + resumoProd.class
-            println "Boni Ins: " + bonificados
-            println "Resu Ins: " + resumoProd
             resumoProdutosWithBoni << (resumoProd + bonificados)
         }
         resumoProdutosWithBoni
@@ -137,6 +134,14 @@ class EstatisticaService {
                 ids << c?.id
         }
         ids
+    }
+
+    def positivacao(Integer month) {
+        if (!month)
+            throw IllegalArgumentException('require month argument.')
+        def hql = "select distinct n.cliente from NotaComercial n where month(n.dataEmissao) = :month"
+        def result = NotaComercial.executeQuery(hql, [month: month])
+        result
     }
 
     def updateNfDevolucao() {
